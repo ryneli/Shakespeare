@@ -15,110 +15,112 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by zhenqiangli on 7/26/17.
+ * DbHelper for Shakespeare works
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
-    private Context mycontext;
+    private Context mContext;
 
-    private static String DB_NAME = "shakespeare_en.sqlite";//the extension may be .sqlite or .db
-    public SQLiteDatabase myDataBase;
+    private static String DB_NAME = "shakespeare_en.sqlite";
+    private SQLiteDatabase mDataBase;
+    private String mDatabasePath;
+
+    public DatabaseHelper(Context context) {
+        super(context,DB_NAME,null,1);
+        this.mContext =context;
+        mDatabasePath = mContext.getApplicationInfo().dataDir
+            + "/databases/";
+        boolean existed = checkDatabase();
+        if (existed) {
+            //System.out.println("Database exists");
+            openDatabase();
+        } else {
+            System.out.println("Database doesn't exist");
+            try {
+                createDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        Log.d(TAG, "onUpgrade: ");
     }
 
-    private String DB_PATH;
+    public SQLiteDatabase getWritableDatabase() {
+        return mDataBase;
+    }
 
-    public DatabaseHelper(Context context) throws IOException {
-        super(context,DB_NAME,null,1);
-        this.mycontext=context;
-        DB_PATH = mycontext.getApplicationInfo().dataDir
-                + "/databases/";
-        boolean dbexist = checkdatabase();
-        if (dbexist) {
-            //System.out.println("Database exists");
-            opendatabase();
-        } else {
-            System.out.println("Database doesn't exist");
-            createdatabase();
+    public synchronized void close() {
+        if(mDataBase != null) {
+            mDataBase.close();
         }
+        super.close();
     }
 
-    public void createdatabase() throws IOException {
-        Log.d(TAG, "createdatabase: ");
-        boolean dbexist = checkdatabase();
-        if(dbexist) {
-            //System.out.println(" Database exists.");
-        } else {
+    private void createDatabase() throws IOException {
+        Log.d(TAG, "createDatabase: ");
+        boolean existed = checkDatabase();
+        if(!existed) {
             this.getReadableDatabase();
             try {
-                copydatabase();
+                copyDatabase();
             } catch(IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private boolean checkdatabase() {
-        //SQLiteDatabase checkdb = null;
-        boolean checkdb = false;
+    private boolean checkDatabase() {
+        boolean checked = false;
         try {
-            String myPath = DB_PATH + DB_NAME;
-            File dbfile = new File(myPath);
-            //checkdb = SQLiteDatabase.openDatabase(myPath,null,SQLiteDatabase.OPEN_READWRITE);
-            checkdb = dbfile.exists();
+            String filePath = mDatabasePath + DB_NAME;
+            File file = new File(filePath);
+            checked = file.exists();
         } catch(SQLiteException e) {
-            System.out.println("Database doesn't exist");
+            Log.d(TAG, "checkDatabase: Database doesn't exist");
         }
-        return checkdb;
+        return checked;
     }
 
-    private void copydatabase() throws IOException {
-        Log.d(TAG, "copydatabase: ");
+    private void copyDatabase() throws IOException {
+        Log.d(TAG, "copyDatabase: ");
         //Open your local db as the input stream
-        InputStream myinput = mycontext.getAssets().open(DB_NAME);
+        InputStream input = mContext.getAssets().open(DB_NAME);
 
         // Path to the just created empty db
-        String outfilename = DB_PATH + DB_NAME;
+        String outPath = mDatabasePath + DB_NAME;
 
         //Open the empty db as the output stream
-        OutputStream myoutput = new FileOutputStream(outfilename);
+        OutputStream output = new FileOutputStream(outPath);
 
-        // transfer byte to inputfile to outputfile
+        // transfer byte to input file to output file
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = myinput.read(buffer))>0) {
-            myoutput.write(buffer,0,length);
+        while ((length = input.read(buffer))>0) {
+            output.write(buffer,0,length);
         }
 
         //Close the streams
-        myoutput.flush();
-        myoutput.close();
-        myinput.close();
+        output.flush();
+        output.close();
+        input.close();
     }
 
-    public void opendatabase() throws SQLException {
-        Log.d(TAG, "opendatabase: ");
-        String mypath = DB_PATH + DB_NAME;
-        myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+    private void openDatabase() throws SQLException {
+        Log.d(TAG, "openDatabase: ");
+        String path = mDatabasePath + DB_NAME;
+        mDataBase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
 
-        long numOfRows = DatabaseUtils.queryNumEntries(myDataBase, "works");
-        Log.d(TAG, "opendatabase: " + numOfRows);
+        long numOfRows = DatabaseUtils.queryNumEntries(mDataBase, "works");
+        Log.d(TAG, "openDatabase: " + numOfRows);
     }
-
-    public synchronized void close() {
-        if(myDataBase != null) {
-            myDataBase.close();
-        }
-        super.close();
-    }
-
 }

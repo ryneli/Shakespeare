@@ -43,6 +43,7 @@ public class SceneActivity extends AppCompatActivity {
     }
 
     presenter = new ScenePresenter(DataRepository.get(this), fragment, work, act, scene);
+    fragment.setPresenter(presenter);
   }
 
   @Override

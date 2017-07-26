@@ -8,7 +8,10 @@ import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Chapters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Characters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
+import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by zhenqiangli on 7/26/17.
@@ -72,5 +75,19 @@ public class DataRepository {
         args
     );
     return dramaFrom(cursor);
+  }
+
+  public List<String> getWorkNameList() {
+    String sql = "select " + Works.Cols.LONG_TITLE
+        + " from " + Works.NAME;
+    Cursor cursor = database.rawQuery(
+        sql,
+        null
+    );
+    List<String> res = new LinkedList<>();
+    while (cursor.moveToNext()) {
+      res.add(cursor.getString(0));
+    }
+    return res;
   }
 }

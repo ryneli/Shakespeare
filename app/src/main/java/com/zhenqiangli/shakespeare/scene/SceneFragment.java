@@ -24,7 +24,12 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   private static final String ARGUMENT_ACT = "act";
   private static final String ARGUMENT_SCENE = "scene";
 
+  private Presenter presenter;
   private TextView contentTextView;
+  private TextView titleTextView;
+  private int workIndex;
+  private int actIndex;
+  private int sceneIndex;
 
   public static SceneFragment newInstance(int work, int act, int scene) {
     Bundle arguments = new Bundle();
@@ -42,12 +47,18 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_scene, container, false);
     contentTextView = (TextView) view.findViewById(R.id.scene_content);
+    titleTextView = (TextView) view.findViewById(R.id.scene_title);
+
+    Bundle args = getArguments();
+    workIndex = args.getInt(ARGUMENT_WORK);
+    actIndex = args.getInt(ARGUMENT_ACT);
+    sceneIndex = args.getInt(ARGUMENT_SCENE);
     return view;
   }
 
   @Override
   public void setPresenter(Presenter presenter) {
-
+    this.presenter = presenter;
   }
 
   @Override
@@ -60,5 +71,6 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       }
     }
     contentTextView.setText(s);
+    titleTextView.setText(String.format("Act %s Scene %s", actIndex, sceneIndex));
   }
 }

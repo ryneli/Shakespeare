@@ -4,14 +4,15 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.min;
+
 /**
  * Created by zhenqiangli on 7/26/17.
  */
 
-public class Drama implements Work {
+public class Drama {
   private static final String TAG = "Drama";
-  public static final int ACT_INDEX_BASE = 0;
-  public static final int SCENE_INDEX_BASE = 1;
+  private int actBase = Integer.MAX_VALUE;
   private Map<Integer, Act> acts = new HashMap<>();
 
   public Map<Integer, Act> getActs() {
@@ -19,12 +20,16 @@ public class Drama implements Work {
   }
 
   public Scene getScene(int act, int scene) {
-    Log.d(TAG, "getScene: " + acts.keySet());
-    Log.d(TAG, "getScene: " + acts.get(1).getScenes().keySet());
-    return acts.get(act).getScenes().get(scene);
+    act += actBase;
+    Scene res = acts.get(act).getScene(scene);
+    if (res == null) {
+      throw new RuntimeException("Scene is null!!!");
+    }
+    return res;
   }
 
   public void put(int act, int scene, String character, String paragraph, int paragraphNum) {
+    actBase = min(actBase, act);
     if (!acts.containsKey(act)) {
       acts.put(act, new Act());
     }

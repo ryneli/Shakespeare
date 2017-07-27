@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
+import com.zhenqiangli.shakespeare.scene.SceneActivity;
+
 import java.util.List;
 
 /**
@@ -64,6 +66,9 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void onBindViewHolder(WorkViewHolder holder, int position) {
       holder.bind(workNames.get(position));
+      holder.itemView.setOnClickListener(v -> {
+        startActivity(SceneActivity.newIntent(getActivity(), position, 0, 0));
+      });
     }
 
     @Override

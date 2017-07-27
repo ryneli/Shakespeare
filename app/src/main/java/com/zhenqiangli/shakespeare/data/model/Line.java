@@ -12,7 +12,6 @@ public class Line {
 
   public Line(String line) {
     content = line;
-    Log.d(TAG, "Line: " + line);
   }
 
   public String getContent() {

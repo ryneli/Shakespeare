@@ -59,7 +59,6 @@ public class SceneFragment extends Fragment implements SceneContract.View {
         s += "\t" + l.getContent() + "\n";
       }
     }
-    Log.d(TAG, "showScene: " + s);
     contentTextView.setText(s);
   }
 }

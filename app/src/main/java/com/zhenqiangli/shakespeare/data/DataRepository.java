@@ -1,17 +1,25 @@
 package com.zhenqiangli.shakespeare.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Chapters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Characters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import static java.lang.Math.min;
 
 /**
  * Created by zhenqiangli on 7/26/17.
@@ -19,6 +27,8 @@ import java.util.List;
 
 public class DataRepository {
   SQLiteDatabase database;
+  private int workBase = Integer.MAX_VALUE;
+  private Map<Integer, Drama> dramas = new HashMap<>();
   private static final String TAG = "DataRepository";
   private static DataRepository INSTANCE;
   private DataRepository(Context context) {
@@ -63,22 +73,27 @@ public class DataRepository {
   }
 
   public Drama getDrama(int i) {
+      i += workBase;
+    Log.d(TAG, "getDrama: " + i + " " + workBase);
+    if (!dramas.containsKey(i)) {
     /* select  */
-    String sql = "select " + TextUtils.join(", ", SELECT_COLUMNS)
-        + " from paragraphs "
-        + " join chapters on chapters.id = paragraphs.chapter_id "
-        + " join characters on characters.id = paragraphs.character_id "
-        + " where chapters.work_id = ?;";
-    String[] args = {String.valueOf(i)};
-    Cursor cursor = database.rawQuery(
-        sql,
-        args
-    );
-    return dramaFrom(cursor);
+      String sql = "select " + TextUtils.join(", ", SELECT_COLUMNS)
+              + " from paragraphs "
+              + " join chapters on chapters.id = paragraphs.chapter_id "
+              + " join characters on characters.id = paragraphs.character_id "
+              + " where chapters.work_id = ?;";
+      String[] args = {String.valueOf(i)};
+      Cursor cursor = database.rawQuery(
+              sql,
+              args
+      );
+      dramas.put(i, dramaFrom(cursor));
+    }
+    return dramas.get(i);
   }
 
   public List<String> getWorkNameList() {
-    String sql = "select " + Works.Cols.LONG_TITLE
+    String sql = "select " + Works.Cols.LONG_TITLE + ", " + Works.Cols.ID
         + " from " + Works.NAME;
     Cursor cursor = database.rawQuery(
         sql,
@@ -87,6 +102,7 @@ public class DataRepository {
     List<String> res = new LinkedList<>();
     while (cursor.moveToNext()) {
       res.add(cursor.getString(0));
+      workBase = min(workBase, cursor.getInt(1));
     }
     return res;
   }

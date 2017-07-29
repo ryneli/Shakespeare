@@ -29,6 +29,6 @@ public class ScenePresenter implements Presenter {
 
   @Override
   public void openScene() {
-    view.showScene(dataRepository.getDrama(work).getScene(act, scene));
+    view.showScene(dataRepository.getDrama(work).getScene(scene));
   }
 }

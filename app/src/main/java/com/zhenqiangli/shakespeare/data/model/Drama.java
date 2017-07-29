@@ -1,5 +1,6 @@
 package com.zhenqiangli.shakespeare.data.model;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,32 +8,39 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 /**
- * Created by zhenqiangli on 7/26/17.
+ * Drama model
  */
 
 public class Drama {
   private static final String TAG = "Drama";
-  private int actBase = Integer.MAX_VALUE;
-  private Map<Integer, Act> acts = new HashMap<>();
+  private Map<Integer, Scene> scenes = new HashMap<>();
 
-  public Map<Integer, Act> getActs() {
-    return acts;
+  public Scene getScene(int sceneIndex) {
+    Log.d(TAG, "getScene: " + sceneIndex);
+    return scenes.get(sceneIndex);
   }
 
-  public Scene getScene(int act, int scene) {
-    act += actBase;
-    Scene res = acts.get(act).getScene(scene);
-    if (res == null) {
-      throw new RuntimeException("Scene is null!!!");
+  @Nullable
+  private Scene getScene(int actIndex, int sceneIndex) {
+    for (Scene scene : scenes.values()) {
+      if (scene.equals(actIndex, sceneIndex)) {
+        return scene;
+      }
     }
-    return res;
+    return null;
   }
 
-  public void put(int act, int scene, String character, String paragraph, int paragraphNum) {
-    actBase = min(actBase, act);
-    if (!acts.containsKey(act)) {
-      acts.put(act, new Act());
+  public void put(int actIndex, int sceneIndex, String character, String paragraph, int paragraphIndex) {
+    int num = scenes.size();
+    Scene scene = getScene(actIndex, sceneIndex);
+    if (scene == null) {
+      scene = new Scene(actIndex, sceneIndex);
+      scenes.put(num, scene);
     }
-    acts.get(act).put(scene, character, paragraph, paragraphNum);
+    scene.put(character, paragraph, paragraphIndex);
+  }
+
+  public int getNumScenes() {
+    return scenes.size();
   }
 }

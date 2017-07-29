@@ -4,20 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by zhenqiangli on 7/26/17.
+ * Scene Model
  */
 
 public class Scene {
+  private int actIndex;
+  private int sceneIndex;
+  public Scene(int actIndex, int sceneIndex) {
+    this.actIndex = actIndex;
+    this.sceneIndex = sceneIndex;
+  }
   private Map<Integer, Paragraph> paragraphs = new HashMap<>();
 
   public Map<Integer, Paragraph> getParagraphs() {
     return paragraphs;
   }
 
-  public void put(String character, String paragraph, int paragraphNum) {
-    if (!paragraphs.containsKey(paragraphNum)) {
-      paragraphs.put(paragraphNum, new Paragraph());
+  public void put(String character, String paragraph, int paragraphIndex) {
+    if (!paragraphs.containsKey(paragraphIndex)) {
+      paragraphs.put(paragraphIndex, new Paragraph());
     }
-    paragraphs.get(paragraphNum).put(character, paragraph);
+    paragraphs.get(paragraphIndex).put(character, paragraph);
+  }
+
+  public boolean equals(int act, int scene) {
+    return actIndex == act && sceneIndex == scene;
   }
 }

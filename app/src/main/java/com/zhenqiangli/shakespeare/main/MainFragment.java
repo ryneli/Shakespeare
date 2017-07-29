@@ -67,7 +67,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     public void onBindViewHolder(WorkViewHolder holder, int position) {
       holder.bind(workNames.get(position));
       holder.itemView.setOnClickListener(v -> {
-        startActivity(SceneActivity.newIntent(getActivity(), position, 0, 0));
+        startActivity(SceneActivity.newIntent(getActivity(), position, 0));
       });
     }
 
@@ -79,11 +79,11 @@ public class MainFragment extends Fragment implements MainContract.View {
 
   private class WorkViewHolder extends RecyclerView.ViewHolder {
     private TextView bookNameView;
-    public WorkViewHolder(View v) {
+    WorkViewHolder(View v) {
       super(v);
       bookNameView = (TextView) v.findViewById(R.id.book_name);
     }
-    public void bind(String s) {
+    void bind(String s) {
       bookNameView.setText(s);
     }
   }

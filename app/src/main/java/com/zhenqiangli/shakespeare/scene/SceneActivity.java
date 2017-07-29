@@ -14,15 +14,13 @@ import com.zhenqiangli.shakespeare.data.DataRepository;
 
 public class SceneActivity extends AppCompatActivity {
   private static final String EXTRA_WORK = "work";
-  private static final String EXTRA_ACT = "act";
   private static final String EXTRA_SCENE = "scene";
   private SceneFragment fragment;
   private ScenePresenter presenter;
 
-  public static Intent newIntent(Context context, int work, int act, int scene) {
+  public static Intent newIntent(Context context, int work, int scene) {
     Intent intent = new Intent(context, SceneActivity.class);
     intent.putExtra(EXTRA_WORK, work);
-    intent.putExtra(EXTRA_ACT, act);
     intent.putExtra(EXTRA_SCENE, scene);
     return intent;
   }
@@ -33,22 +31,25 @@ public class SceneActivity extends AppCompatActivity {
     setContentView(R.layout.activity_scene);
     Intent intent = getIntent();
     int work = intent.getIntExtra(EXTRA_WORK, 0);
-    int act = intent.getIntExtra(EXTRA_ACT, 0);
     int scene = intent.getIntExtra(EXTRA_SCENE, 0);
     if (fragment == null) {
-      fragment = SceneFragment.newInstance(work, act, scene);
+      fragment = SceneFragment.newInstance();
       getSupportFragmentManager().beginTransaction()
           .add(R.id.scene_container, fragment)
           .commit();
     }
 
-    presenter = new ScenePresenter(DataRepository.get(this), fragment, work, act, scene);
+    presenter = new ScenePresenter(DataRepository.get(this), fragment, work);
     fragment.setPresenter(presenter);
+
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    presenter.openScene();
+    Intent intent = getIntent();
+    int work = intent.getIntExtra(EXTRA_WORK, 0);
+    int scene = intent.getIntExtra(EXTRA_SCENE, 0);
+    presenter.openWork(scene);
   }
 }

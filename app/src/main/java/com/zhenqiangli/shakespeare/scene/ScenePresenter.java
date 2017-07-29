@@ -11,15 +11,11 @@ import com.zhenqiangli.shakespeare.scene.SceneContract.View;
 public class ScenePresenter implements Presenter {
   private View view;
   private DataRepository dataRepository;
-  private int work;
-  private int act;
-  private int scene;
-  public ScenePresenter(DataRepository dataRepository, View view, int work, int act, int scene) {
+  private int workIndex;
+  public ScenePresenter(DataRepository dataRepository, View view, int workIndex) {
     this.view = view;
     this.dataRepository = dataRepository;
-    this.work = work;
-    this.act = act;
-    this.scene = scene;
+    this.workIndex = workIndex;
   }
 
   @Override
@@ -28,7 +24,7 @@ public class ScenePresenter implements Presenter {
   }
 
   @Override
-  public void openScene() {
-    view.showScene(dataRepository.getDrama(work).getScene(scene));
+  public void openWork(int sceneIndex) {
+    view.showDrama(dataRepository.getDrama(workIndex), sceneIndex);
   }
 }

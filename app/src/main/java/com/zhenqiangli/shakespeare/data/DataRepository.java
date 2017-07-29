@@ -93,7 +93,7 @@ public class DataRepository {
   }
 
   public List<String> getWorkNameList() {
-    String sql = "select " + Works.Cols.LONG_TITLE + ", " + Works.Cols.ID
+    String sql = "select " + Works.Cols.TITLE + ", " + Works.Cols.ID
         + " from " + Works.NAME;
     Cursor cursor = database.rawQuery(
         sql,

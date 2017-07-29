@@ -1,41 +1,38 @@
 package com.zhenqiangli.shakespeare.scene;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
+import com.zhenqiangli.shakespeare.data.DataRepository;
+import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.Line;
 import com.zhenqiangli.shakespeare.data.model.Paragraph;
 import com.zhenqiangli.shakespeare.data.model.Scene;
 import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
+import com.zhenqiangli.shakespeare.util.HtmlBuilder;
 
 /**
- * Created by zhenqiangli on 7/26/17.
+ * Fragment as View to show scenes of a drama.
  */
 
 public class SceneFragment extends Fragment implements SceneContract.View {
   private static final String TAG = "SceneFragment";
-  private static final String ARGUMENT_WORK = "work";
-  private static final String ARGUMENT_ACT = "act";
-  private static final String ARGUMENT_SCENE = "scene";
 
-  private Presenter presenter;
-  private TextView contentTextView;
-  private TextView titleTextView;
-  private int workIndex;
-  private int actIndex;
-  private int sceneIndex;
+  private SceneViewAdapter adapter;
 
-  public static SceneFragment newInstance(int work, int act, int scene) {
+  public static SceneFragment newInstance() {
     Bundle arguments = new Bundle();
-    arguments.putInt(ARGUMENT_WORK, work);
-    arguments.putInt(ARGUMENT_ACT, act);
-    arguments.putInt(ARGUMENT_SCENE, scene);
     SceneFragment fragment = new SceneFragment();
     fragment.setArguments(arguments);
     return fragment;
@@ -46,31 +43,78 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_scene, container, false);
-    contentTextView = (TextView) view.findViewById(R.id.scene_content);
-    titleTextView = (TextView) view.findViewById(R.id.scene_title);
-
-    Bundle args = getArguments();
-    workIndex = args.getInt(ARGUMENT_WORK);
-    actIndex = args.getInt(ARGUMENT_ACT);
-    sceneIndex = args.getInt(ARGUMENT_SCENE);
+    RecyclerView scenesView = (RecyclerView) view.findViewById(R.id.rv_scenes);
+    scenesView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    adapter = new SceneViewAdapter(getActivity());
+    scenesView.setAdapter(adapter);
     return view;
   }
 
   @Override
   public void setPresenter(Presenter presenter) {
-    this.presenter = presenter;
+    // Not used for now
   }
 
   @Override
-  public void showScene(Scene scene) {
-    String s = "";
-    for (Paragraph p : scene.getParagraphs().values()) {
-      s += p.getCharactorName() + "\n";
-      for (Line l : p.getLines().values()) {
-        s += "\t" + l.getContent() + "\n";
-      }
+  public void showDrama(Drama drama, int sceneIndex) {
+    adapter.setDrama(drama, sceneIndex);
+  }
+  private class SceneViewAdapter extends RecyclerView.Adapter<SceneViewHolder> {
+    private Drama drama;
+    private int sceneIndex;
+    private Context context;
+
+    SceneViewAdapter(Context context) {
+      this.context = context;
     }
-    contentTextView.setText(s);
-    titleTextView.setText(String.format("Act %s Scene %s", scene.getActIndex(), scene.getSceneIndex()));
+
+    void setDrama(Drama drama, int sceneIndex) {
+      this.drama = drama;
+      this.sceneIndex = sceneIndex;
+      notifyDataSetChanged();
+    }
+    @Override
+    public SceneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      View v = LayoutInflater.from(context).inflate(R.layout.item_scene, parent, false);
+      return new SceneViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(SceneViewHolder holder, int position) {
+      holder.bind(drama.getScene(position));
+    }
+
+    @Override
+    public int getItemCount() {
+      return drama.getNumScenes();
+    }
+  }
+
+  private static class SceneViewHolder extends RecyclerView.ViewHolder {
+    private TextView titleView;
+    private TextView contentView;
+    SceneViewHolder(View v) {
+      super(v);
+      titleView = (TextView) v.findViewById(R.id.scene_title);
+      contentView = (TextView) v.findViewById(R.id.scene_content);
+    }
+
+    void bind(Scene scene) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        contentView.setText(Html.fromHtml(parseScene(scene), Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL));
+      }
+      titleView.setText(String.format("Act %s Scene %s", scene.getActIndex(), scene.getSceneIndex()));
+    }
+
+    private String parseScene(Scene scene) {
+      HtmlBuilder htmlBuilder = new HtmlBuilder();
+      for (Paragraph p : scene.getParagraphs().values()) {
+        htmlBuilder.h1(p.getCharactorName()).br();
+        for (Line l : p.getLines().values()) {
+          htmlBuilder.append(l.getContent()).br();
+        }
+      }
+      return htmlBuilder.build();
+    }
   }
 }

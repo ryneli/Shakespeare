@@ -2,6 +2,7 @@ package com.zhenqiangli.shakespeare.scene;
 
 import com.zhenqiangli.shakespeare.BasePresenter;
 import com.zhenqiangli.shakespeare.BaseView;
+import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.Scene;
 
 /**
@@ -10,9 +11,9 @@ import com.zhenqiangli.shakespeare.data.model.Scene;
 
 public interface SceneContract {
   interface View extends BaseView<Presenter> {
-    void showScene(Scene scene);
+    void showDrama(Drama drama, int sceneIndex);
   }
   interface Presenter extends BasePresenter {
-    void openScene();
+    void openWork(int sceneIndex);
   }
 }

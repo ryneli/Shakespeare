@@ -9,7 +9,13 @@
     </style>
 
     <style name="TextTitle">
-        <item name="android:textSize"> 20dp </item>
+        <item name="android:textSize"> 20sp </item>
+    </style>
+    <style name="TextBookName">
+        <item name="android:textSize"> 20sp </item>
+    </style>
+    <style name="TextBody">
+        <item name="android:textSize"> 14sp </item>
     </style>
 
 </resources>

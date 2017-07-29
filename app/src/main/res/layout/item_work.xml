@@ -4,12 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/book_item_height"
-    android:layout_marginStart="@dimen/book_item_margin"
-    android:layout_marginEnd="@dimen/book_item_margin">
+    android:layout_margin="@dimen/book_item_margin">
   <TextView
-      android:gravity="center_vertical"
+      android:id="@+id/book_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:text="icon"/>
+  <TextView
       android:id="@+id/book_name"
+      style="@style/TextBookName"
+      android:gravity="center_vertical"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_toRightOf="@id/book_icon"
       android:text="book name"/>
+  <TextView
+      android:id="@+id/book_detail"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toRightOf="@id/book_icon"
+      android:layout_alignBottom="@id/book_name"
+      android:layout_alignParentBottom="true"
+      android:text="detail"/>
 </RelativeLayout>

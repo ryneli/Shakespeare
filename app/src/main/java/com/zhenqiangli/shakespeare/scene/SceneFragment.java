@@ -71,6 +71,6 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       }
     }
     contentTextView.setText(s);
-    titleTextView.setText(String.format("Act %s Scene %s", actIndex, sceneIndex));
+    titleTextView.setText(String.format("Act %s Scene %s", scene.getActIndex(), scene.getSceneIndex()));
   }
 }

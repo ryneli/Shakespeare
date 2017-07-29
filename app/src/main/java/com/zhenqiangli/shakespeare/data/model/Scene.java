@@ -30,4 +30,12 @@ public class Scene {
   public boolean equals(int act, int scene) {
     return actIndex == act && sceneIndex == scene;
   }
+
+  public int getActIndex() {
+    return actIndex;
+  }
+
+  public int getSceneIndex() {
+    return sceneIndex;
+  }
 }

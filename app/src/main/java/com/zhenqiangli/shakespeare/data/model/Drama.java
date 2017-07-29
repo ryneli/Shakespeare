@@ -13,7 +13,12 @@ import static java.lang.Math.min;
 
 public class Drama {
   private static final String TAG = "Drama";
+  private int workIndex;
   private Map<Integer, Scene> scenes = new HashMap<>();
+
+    public Drama(int workIndex) {
+        this.workIndex = workIndex;
+    }
 
   public Scene getScene(int sceneIndex) {
     Log.d(TAG, "getScene: " + sceneIndex);
@@ -40,6 +45,9 @@ public class Drama {
     scene.put(character, paragraph, paragraphIndex);
   }
 
+  public int getWorkIndex() {
+      return workIndex;
+  }
   public int getNumScenes() {
     return scenes.size();
   }

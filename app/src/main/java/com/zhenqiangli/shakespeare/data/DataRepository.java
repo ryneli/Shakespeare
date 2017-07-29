@@ -64,8 +64,8 @@ public class DataRepository {
     drama.put(act, scene, character, paragraph, paragraphNum);
   }
 
-  private Drama dramaFrom(Cursor cursor) {
-    Drama drama = new Drama();
+  private Drama dramaFrom(Cursor cursor, int work) {
+    Drama drama = new Drama(work);
     while (cursor.moveToNext()) {
       putCursorRowToDrama(cursor, drama);
     }
@@ -87,7 +87,7 @@ public class DataRepository {
               sql,
               args
       );
-      dramas.put(i, dramaFrom(cursor));
+      dramas.put(i, dramaFrom(cursor, i));
     }
     return dramas.get(i);
   }

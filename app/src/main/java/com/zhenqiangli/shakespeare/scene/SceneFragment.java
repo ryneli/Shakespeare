@@ -1,16 +1,13 @@
 package com.zhenqiangli.shakespeare.scene;
 
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +22,6 @@ import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Fragment as View to show scenes of a drama.
@@ -63,6 +59,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
         showSystemUI(scenesView);
       }
     });
+    hideSystemUI(scenesView);
     return view;
   }
 
@@ -217,5 +214,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    Handler handler = new Handler();
+    handler.postDelayed(()->hideSystemUI(v), 2000);
   }
 }

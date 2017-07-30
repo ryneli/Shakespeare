@@ -13,13 +13,14 @@
       android:text="icon"/>
   <TextView
       android:id="@+id/book_name"
-      style="@style/TextBookName"
+      style="@style/Text.Title"
       android:gravity="center_vertical"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_toRightOf="@id/book_icon"
       android:text="book name"/>
   <TextView
+      style="@style/Text.Subtitle"
       android:id="@+id/book_detail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

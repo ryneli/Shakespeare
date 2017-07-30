@@ -88,6 +88,7 @@ public class DataRepository {
               args
       );
       dramas.put(i, dramaFrom(cursor, i));
+      cursor.close();
     }
     return dramas.get(i);
   }
@@ -104,6 +105,27 @@ public class DataRepository {
       res.add(cursor.getString(0));
       workBase = min(workBase, cursor.getInt(1));
     }
+    cursor.close();
+    return res;
+  }
+
+  public List<String> getWorkDetailList() {
+    String sql =
+            "select " + Works.Cols.LONG_TITLE + ", " + Works.Cols.YEAR + ", " + Works.Cols.GENRE
+            + " from " + Works.NAME;
+    Cursor cursor = database.rawQuery(
+            sql,
+            null
+    );
+    List<String> res = new LinkedList<>();
+    while (cursor.moveToNext()) {
+      String title = cursor.getString(0);
+      int year = cursor.getInt(1);
+      String genre = cursor.getString(2);
+      String item = String.format("%s - %s (%s)", title, genre, year);
+      res.add(item);
+    }
+    cursor.close();
     return res;
   }
 }

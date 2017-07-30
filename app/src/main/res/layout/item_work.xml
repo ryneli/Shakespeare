@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/book_item_height"
     android:layout_margin="@dimen/book_item_margin">
-  <TextView
+  <ImageView
       android:id="@+id/book_icon"
-      android:layout_width="wrap_content"
+      android:layout_width="@dimen/book_item_height"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="8dp"
-      android:text="icon"/>
+      android:layout_alignParentStart="true"
+      android:src="@drawable/close_book"/>
   <TextView
       android:id="@+id/book_name"
       style="@style/Text.Title"
-      android:gravity="center_vertical"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="40dp"
       android:layout_toRightOf="@id/book_icon"
+      android:layout_alignParentTop="true"
       android:text="book name"/>
   <TextView
       style="@style/Text.Subtitle"

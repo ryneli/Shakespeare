@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MainContract {
   interface View extends BaseView<Presenter> {
-    void showWorkList(List<String> workList);
+    void showWorkList(List<String> workList, List<String> workDetailList);
   }
   interface Presenter extends BasePresenter {
     void openWorkList();

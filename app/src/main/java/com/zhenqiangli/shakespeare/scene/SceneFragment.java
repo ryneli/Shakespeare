@@ -50,18 +50,6 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     scenesView.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new SceneViewAdapter(getActivity());
     scenesView.setAdapter(adapter);
-    scenesView.addOnScrollListener(new HidingScrollListener() {
-      @Override
-      public void onHide() {
-        hideSystemUI(scenesView);
-      }
-
-      @Override
-      public void onShow() {
-        showSystemUI(scenesView);
-      }
-    });
-    hideSystemUI(scenesView);
     return view;
   }
 
@@ -179,34 +167,5 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     }
 
     protected abstract void bind(String text);
-  }
-
-  // https://mzgreen.github.io/2015/02/15/How-to-hideshow-Toolbar-when-list-is-scroling%28part1%29/
-  abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
-    private static final int HIDE_THRESHOLD = 20;
-    private int scrolledDistance = 0;
-    private boolean controlsVisible = true;
-
-    @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-      super.onScrolled(recyclerView, dx, dy);
-
-      if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
-        onHide();
-        controlsVisible = false;
-        scrolledDistance = 0;
-      } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible) {
-        onShow();
-        controlsVisible = true;
-        scrolledDistance = 0;
-      }
-
-      if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
-        scrolledDistance += dy;
-      }
-    }
-
-    public abstract void onHide();
-    public abstract void onShow();
   }
 }

@@ -22,6 +22,7 @@
     </style>
     <style name="Text.Title">
         <item name="android:textSize"> 20sp </item>
+        <item name="android:textStyle"> bold </item>
     </style>
     <style name="Text.Title.Scene">
         <item name="android:textSize"> 24sp </item>

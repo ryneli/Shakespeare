@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.Drama;
@@ -131,33 +132,23 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     }
   }
 
-  private static class SceneTitleViewHolder extends TextViewHolder {
-    public SceneTitleViewHolder(View v) {
-      super(v);
-    }
-  }
-
-  private static class ScentenceViewHolder extends TextViewHolder {
-    public ScentenceViewHolder(View v) {
-      super(v);
-    }
-  }
-
-  private static class CharacterNameViewHolder extends TextViewHolder {
-    public CharacterNameViewHolder(View v) {
-      super(v);
-    }
-  }
-
-  private static class TextViewHolder extends BaseViewHolder {
+  private class TextViewHolder extends BaseViewHolder {
     TextView contentView;
+    String text = "";
     TextViewHolder(View v) {
       super(v);
       contentView = (TextView) v.findViewById(R.id.item);
+      contentView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Toast.makeText(getActivity(), "Search: " + text, Toast.LENGTH_LONG).show();
+        }
+      });
     }
     @Override
     protected void bind(String text) {
       contentView.setText(text);
+      this.text = text;
     }
   }
 

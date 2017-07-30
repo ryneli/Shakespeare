@@ -2,7 +2,6 @@ package com.zhenqiangli.shakespeare.scene;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -22,6 +21,9 @@ import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.zhenqiangli.shakespeare.util.Others.hideSystemUI;
+import static com.zhenqiangli.shakespeare.util.Others.showSystemUI;
 
 /**
  * Fragment as View to show scenes of a drama.
@@ -141,28 +143,46 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     }
   }
 
+  private static class SceneTitleViewHolder extends TextViewHolder {
+    public SceneTitleViewHolder(View v) {
+      super(v);
+    }
+  }
+
+  private static class ScentenceViewHolder extends TextViewHolder {
+    public ScentenceViewHolder(View v) {
+      super(v);
+    }
+  }
+
+  private static class CharacterNameViewHolder extends TextViewHolder {
+    public CharacterNameViewHolder(View v) {
+      super(v);
+    }
+  }
+
   private static class TextViewHolder extends BaseViewHolder {
     TextView contentView;
-    public TextViewHolder(View v) {
+    TextViewHolder(View v) {
       super(v);
       contentView = (TextView) v.findViewById(R.id.item);
     }
     @Override
-    public void bind(String text) {
+    protected void bind(String text) {
       contentView.setText(text);
     }
   }
 
   private static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-    public BaseViewHolder(View v) {
+    BaseViewHolder(View v) {
       super(v);
     }
 
-    public abstract void bind(String text);
+    protected abstract void bind(String text);
   }
 
   // https://mzgreen.github.io/2015/02/15/How-to-hideshow-Toolbar-when-list-is-scroling%28part1%29/
-  public abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
+  abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
     private static final int HIDE_THRESHOLD = 20;
     private int scrolledDistance = 0;
     private boolean controlsVisible = true;
@@ -188,33 +208,5 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
     public abstract void onHide();
     public abstract void onShow();
-
-  }
-
-  // https://developer.android.com/training/system-ui/immersive.html#compare
-  // This snippet hides the system bars.
-  private void hideSystemUI(View v) {
-    // Set the IMMERSIVE flag.
-    // Set the content to appear under the system bars so that the content
-    // doesn't resize when the system bars hide and show.
-    v.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE);
-  }
-
-  // This snippet shows the system bars. It does this by removing all the flags
-// except for the ones that make the content appear under the system bars.
-  private void showSystemUI(View v) {
-    // TODO: add timer to hide toolbar after 2 seconds
-    v.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    Handler handler = new Handler();
-    handler.postDelayed(()->hideSystemUI(v), 2000);
   }
 }

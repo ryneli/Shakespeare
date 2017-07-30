@@ -11,16 +11,22 @@
     <style name="Text">
         <item name="android:layout_marginStart"> 8dp </item>
         <item name="android:layout_marginEnd"> 8dp </item>
-        <item name="android:selectable"> true </item>
+        <item name="android:textIsSelectable"> true </item>
     </style>
     <style name="Text.Title">
         <item name="android:textSize"> 20sp </item>
+    </style>
+    <style name="Text.Title.Scene">
+        <item name="android:textColor"> @color/red </item>
+        <item name="android:layout_marginTop"> 8dp </item>
     </style>
     <style name="Text.Subtitle">
         <item name="android:textSize"> 14sp </item>
     </style>
     <style name="Text.CharacterName">
-        <item name="android:textSize"> 20sp </item>
+        <item name="android:textSize"> 16sp </item>
+        <item name="android:textStyle"> bold </item>
+        <item name="android:layout_marginTop"> 8dp </item>
     </style>
     <style name="Text.Sentence">
         <item name="android:textSize"> 14sp </item>

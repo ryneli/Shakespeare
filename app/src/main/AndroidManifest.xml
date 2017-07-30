@@ -17,8 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".scene.SceneActivity"
-            android:parentActivityName=".main.MainActivity"
-            android:immersive="true">
+            android:parentActivityName=".main.MainActivity">
         </activity>
     </application>
 

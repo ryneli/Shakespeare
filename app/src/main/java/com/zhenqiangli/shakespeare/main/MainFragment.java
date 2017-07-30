@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.scene.SceneActivity;
+import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
 
 import java.util.List;
 
@@ -42,6 +43,17 @@ public class MainFragment extends Fragment implements MainContract.View {
     DividerItemDecoration itemDecoration = new DividerItemDecoration(worksView.getContext(),
             linearLayoutManager.getOrientation());
     worksView.addItemDecoration(itemDecoration);
+    worksView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), worksView, new RecyclerItemClickListener.OnItemClickListener() {
+      @Override
+      public void onItemClick(View view, int position) {
+        startActivity(SceneActivity.newIntent(getActivity(), position, 0));
+      }
+
+      @Override
+      public void onLongItemClick(View view, int position) {
+
+      }
+    }));
     return view;
   }
 
@@ -75,9 +87,6 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void onBindViewHolder(WorkViewHolder holder, int position) {
       holder.bind(workNames.get(position), workDetailList.get(position));
-      holder.itemView.setOnClickListener(v -> {
-        startActivity(SceneActivity.newIntent(getActivity(), position, 0));
-      });
     }
 
     @Override

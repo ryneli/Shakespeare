@@ -119,8 +119,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "openDatabase: ");
         String path = mDatabasePath + DB_NAME;
         mDataBase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
-
-        long numOfRows = DatabaseUtils.queryNumEntries(mDataBase, "works");
-        Log.d(TAG, "openDatabase: " + numOfRows);
     }
 }

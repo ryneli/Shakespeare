@@ -21,7 +21,6 @@ public class Drama {
     }
 
   public Scene getScene(int sceneIndex) {
-    Log.d(TAG, "getScene: " + sceneIndex);
     return scenes.get(sceneIndex);
   }
 

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
+import com.zhenqiangli.shakespeare.network.JsoupRequester;
 import com.zhenqiangli.shakespeare.network.VolleyRequester;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.setPresenter(presenter);
 
         VolleyRequester.getInstance(this).getDefinition("ambition");
+        JsoupRequester.test();
     }
 
     @Override

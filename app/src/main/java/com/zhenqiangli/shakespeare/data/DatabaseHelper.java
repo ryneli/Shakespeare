@@ -80,7 +80,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             File file = new File(filePath);
             checked = file.exists();
 
-            // TODO: for debug
             /*
             if (checked) {
                 file.delete();

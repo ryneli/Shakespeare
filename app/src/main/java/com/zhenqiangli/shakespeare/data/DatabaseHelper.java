@@ -1,12 +1,12 @@
 package com.zhenqiangli.shakespeare.data;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 import android.util.Log;
+import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
+import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works.Cols;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,12 +21,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
     private Context mContext;
 
-    private static String DB_NAME = "shakespeare_en.sqlite";
+    private static String DATABASE_NAME = "shakespeare_en.sqlite";
+    private static int DATABASE_VERSION_BASE = 1;
+    private static int DATABASE_VERSION = 1;
     private SQLiteDatabase mDataBase;
     private String mDatabasePath;
 
-    public DatabaseHelper(Context context) {
-        super(context,DB_NAME,null,1);
+    DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.mContext =context;
         mDatabasePath = mContext.getApplicationInfo().dataDir
             + "/databases/";
@@ -39,29 +41,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
-        openDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "onCreate: " + db.getVersion());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "onUpgrade: ");
-    }
-
-    @NonNull
-    public SQLiteDatabase getWritableDatabase() {
-        return mDataBase;
-    }
-
-    public synchronized void close() {
-        if(mDataBase != null) {
-            mDataBase.close();
-        }
-        super.close();
+        Log.d(TAG, "onUpgrade: " + String.format("%s/%s", oldVersion, newVersion));
     }
 
     private void createDatabase() throws IOException {
@@ -75,12 +64,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "ALTER TABLE " + Works.NAME +
+            " ADD COLUMN " + Cols.LAST_ACCESS + " int";
+        db.execSQL(sql);
+        db.setVersion(DATABASE_VERSION_BASE);
+        db.close();
     }
 
     private boolean checkDatabase() {
         boolean checked = false;
         try {
-            String filePath = mDatabasePath + DB_NAME;
+            String filePath = mDatabasePath + DATABASE_NAME;
             File file = new File(filePath);
             checked = file.exists();
         } catch(SQLiteException e) {
@@ -92,10 +87,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void copyDatabase() throws IOException {
         Log.d(TAG, "copyDatabase: ");
         //Open your local db as the input stream
-        InputStream input = mContext.getAssets().open(DB_NAME);
+        InputStream input = mContext.getAssets().open(DATABASE_NAME);
 
         // Path to the just created empty db
-        String outPath = mDatabasePath + DB_NAME;
+        String outPath = mDatabasePath + DATABASE_NAME;
 
         //Open the empty db as the output stream
         OutputStream output = new FileOutputStream(outPath);
@@ -111,11 +106,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         output.flush();
         output.close();
         input.close();
-    }
-
-    private void openDatabase() throws SQLException {
-        Log.d(TAG, "openDatabase: ");
-        String path = mDatabasePath + DB_NAME;
-        mDataBase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
     }
 }

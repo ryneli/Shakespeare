@@ -13,7 +13,7 @@ public class MainPresenter implements MainContract.Presenter {
 
   @Override
   public void openWorkList() {
-    view.showWorkList(dataRepository.getWorkNameList(), dataRepository.getWorkDetailList());
+    view.showWorkList(dataRepository.getDramaSummaryList());
   }
 
   public MainPresenter(DataRepository dataRepository, View view) {

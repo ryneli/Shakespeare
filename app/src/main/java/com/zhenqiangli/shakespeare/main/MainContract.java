@@ -2,6 +2,7 @@ package com.zhenqiangli.shakespeare.main;
 
 import com.zhenqiangli.shakespeare.BasePresenter;
 import com.zhenqiangli.shakespeare.BaseView;
+import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface MainContract {
   interface View extends BaseView<Presenter> {
-    void showWorkList(List<String> workList, List<String> workDetailList);
+    void showWorkList(List<DramaSummary> dramaSummaryList);
   }
   interface Presenter extends BasePresenter {
     void openWorkList();

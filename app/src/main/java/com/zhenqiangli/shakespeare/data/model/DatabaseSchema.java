@@ -23,6 +23,7 @@ public class DatabaseSchema {
       public static final String LONG_TITLE = "long_title";
       public static final String YEAR = "year";
       public static final String GENRE = "genre";
+      public static final String LAST_ACCESS = "last_access";
     }
   }
 

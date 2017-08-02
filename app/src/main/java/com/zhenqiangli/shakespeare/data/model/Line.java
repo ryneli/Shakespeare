@@ -1,7 +1,5 @@
 package com.zhenqiangli.shakespeare.data.model;
 
-import android.util.Log;
-
 /**
  * Created by zhenqiangli on 7/26/17.
  */

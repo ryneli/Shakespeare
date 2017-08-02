@@ -1,18 +1,16 @@
 package com.zhenqiangli.shakespeare.data;
 
-import static java.lang.Math.min;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Chapters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Characters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
+import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +22,7 @@ import java.util.Map;
 
 public class DataRepository {
   SQLiteDatabase database;
-  private int workBase = Integer.MAX_VALUE;
+  private static final int WORK_BASE_INDEX = 1;
   private Map<Integer, Drama> dramas = new HashMap<>();
   private static final String TAG = "DataRepository";
   private static DataRepository INSTANCE;
@@ -70,8 +68,7 @@ public class DataRepository {
   }
 
   public Drama getDrama(int i) {
-      i += workBase;
-    Log.d(TAG, "getDrama: " + i + " " + workBase);
+      i += WORK_BASE_INDEX;
     if (!dramas.containsKey(i)) {
     /* select  */
       String sql = "select " + TextUtils.join(", ", SELECT_COLUMNS)
@@ -90,37 +87,26 @@ public class DataRepository {
     return dramas.get(i);
   }
 
-  public List<String> getWorkNameList() {
-    String sql = "select " + Works.Cols.TITLE + ", " + Works.Cols.ID
-        + " from " + Works.NAME;
-    Cursor cursor = database.rawQuery(
-        sql,
-        null
-    );
-    List<String> res = new LinkedList<>();
-    while (cursor.moveToNext()) {
-      res.add(cursor.getString(0));
-      workBase = min(workBase, cursor.getInt(1));
-    }
-    cursor.close();
-    return res;
-  }
+  private static final String[]  DRAMA_SUMMARY_COLUMNS = {
+      Works.Cols.TITLE,
+      Works.Cols.LONG_TITLE,
+      Works.Cols.YEAR,
+      Works.Cols.GENRE,
+      Works.Cols.LAST_ACCESS
+  };
 
-  public List<String> getWorkDetailList() {
-    String sql =
-            "select " + Works.Cols.LONG_TITLE + ", " + Works.Cols.YEAR + ", " + Works.Cols.GENRE
-            + " from " + Works.NAME;
-    Cursor cursor = database.rawQuery(
-            sql,
-            null
-    );
-    List<String> res = new LinkedList<>();
+  public List<DramaSummary> getDramaSummaryList() {
+    String sql = "select " + TextUtils.join(", ", DRAMA_SUMMARY_COLUMNS)
+        + " from " + Works.NAME;
+    Cursor cursor = database.rawQuery(sql, null);
+    List<DramaSummary> res = new LinkedList<>();
     while (cursor.moveToNext()) {
-      String title = cursor.getString(0);
-      int year = cursor.getInt(1);
-      String genre = cursor.getString(2);
-      String item = String.format("%s - %s (%s)", title, genre, year);
-      res.add(item);
+      res.add(new DramaSummary(
+          cursor.getString(0),
+          cursor.getString(1),
+          cursor.getInt(2),
+          cursor.getString(3),
+          cursor.getInt(4)));
     }
     cursor.close();
     return res;

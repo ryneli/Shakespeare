@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
+import android.util.Log;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 
@@ -15,12 +14,14 @@ import com.zhenqiangli.shakespeare.data.DataRepository;
  */
 
 public class SceneActivity extends AppCompatActivity {
+  private static final String TAG = "SceneActivity";
   private static final String EXTRA_WORK = "work";
   private static final String EXTRA_SCENE = "scene";
   private SceneFragment fragment;
   private ScenePresenter presenter;
 
   public static Intent newIntent(Context context, int work, int scene) {
+    Log.d(TAG, "newIntent: " + work + " " + scene);
     Intent intent = new Intent(context, SceneActivity.class);
     intent.putExtra(EXTRA_WORK, work);
     intent.putExtra(EXTRA_SCENE, scene);
@@ -34,6 +35,7 @@ public class SceneActivity extends AppCompatActivity {
     Intent intent = getIntent();
     int work = intent.getIntExtra(EXTRA_WORK, 0);
     int scene = intent.getIntExtra(EXTRA_SCENE, 0);
+    Log.d(TAG, "onCreate: " + work + " " + scene);
     if (fragment == null) {
       fragment = SceneFragment.newInstance();
       getSupportFragmentManager().beginTransaction()
@@ -52,6 +54,7 @@ public class SceneActivity extends AppCompatActivity {
     Intent intent = getIntent();
     int work = intent.getIntExtra(EXTRA_WORK, 0);
     int scene = intent.getIntExtra(EXTRA_SCENE, 0);
+    Log.d(TAG, "onResume: " + work + " " + scene);
     presenter.openWork(scene);
   }
 }

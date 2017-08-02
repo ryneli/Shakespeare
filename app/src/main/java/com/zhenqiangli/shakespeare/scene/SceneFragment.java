@@ -4,27 +4,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.Line;
 import com.zhenqiangli.shakespeare.data.model.Paragraph;
 import com.zhenqiangli.shakespeare.data.model.Scene;
 import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
-
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.zhenqiangli.shakespeare.util.Others.hideSystemUI;
-import static com.zhenqiangli.shakespeare.util.Others.showSystemUI;
 
 /**
  * Fragment as View to show scenes of a drama.
@@ -34,6 +34,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   private static final String TAG = "SceneFragment";
 
   private SceneViewAdapter adapter;
+  private Presenter presenter;
 
   public static SceneFragment newInstance() {
     Bundle arguments = new Bundle();
@@ -56,13 +57,27 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
   @Override
   public void setPresenter(Presenter presenter) {
-    // Not used for now
+    this.presenter = presenter;
   }
 
   @Override
   public void showDrama(Drama drama, int sceneIndex) {
     adapter.setDrama(drama, sceneIndex);
   }
+
+  private static final String TAG_WORD_DEFINITION_FRAGMENT = "WordDefFragment";
+  private void showDefinition(String word) {
+    WordDefFragment fragment = (WordDefFragment) getActivity().getSupportFragmentManager()
+        .findFragmentByTag(TAG_WORD_DEFINITION_FRAGMENT);
+    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+    if (fragment != null) {
+      ft.remove(fragment);
+    }
+    ft.addToBackStack(null);
+
+    WordDefFragment.newInstance(word).show(ft, TAG_WORD_DEFINITION_FRAGMENT);
+  }
+
   private class SceneViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int TYPE_SCENE_TITLE = 1;
     private static final int TYPE_CHARACTER_NAME = 2;
@@ -138,17 +153,36 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     TextViewHolder(View v) {
       super(v);
       contentView = (TextView) v.findViewById(R.id.item);
-      contentView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Toast.makeText(getActivity(), "Search: " + text, Toast.LENGTH_LONG).show();
-        }
-      });
     }
     @Override
     protected void bind(String text) {
-      contentView.setText(text);
+      contentView.setMovementMethod(LinkMovementMethod.getInstance());
+      SpannableStringBuilder builder = new SpannableStringBuilder();
+      for (String word : text.split(" ")) {
+        builder.append(word);
+        builder.setSpan(new ClickableWordSpan(word),
+            builder.length() - word.length(), builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" ");
+      }
+      contentView.setText(builder);
       this.text = text;
+    }
+  }
+
+  private class ClickableWordSpan extends ClickableSpan {
+    String word;
+    public ClickableWordSpan(String word) {
+      this.word = word;
+    }
+
+    @Override
+    public void onClick(View widget) {
+      showDefinition(word);
+    }
+
+    @Override
+    public void updateDrawState(TextPaint ds) {
+      ds.setUnderlineText(false);
     }
   }
 

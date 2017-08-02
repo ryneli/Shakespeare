@@ -2,9 +2,7 @@ package com.zhenqiangli.shakespeare.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.LruCache;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -13,12 +11,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.zhenqiangli.shakespeare.data.dictionary.Definition;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -70,7 +66,9 @@ public class VolleyRequester {
         return requestQueue;
     }
 
-    public void getDefinition(String word) {
+    public void getDefinition(String word,
+        Response.Listener<Definition[]> listener,
+        Response.ErrorListener errorListener) {
         String url = "http://api.wordnik.com:80/v4/word.json/" + word + "/definitions?" +
                 "limit=200&" +
                 "includeRelated=true&" +
@@ -79,13 +77,8 @@ public class VolleyRequester {
                 "includeTags=true&" +
                 "api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"; // My api of wordnik
         GsonRequest<Definition[]> request = new GsonRequest<>(url, Definition[].class, null,
-                response -> {
-                    Log.d(TAG, "getDefinition-response: " + response.length);
-                    for (int i = 0; i < response.length; i++) {
-                        Log.d(TAG, "getDefinition-response: \t" + response[i].getText());
-                    }
-                },
-                error -> Log.d(TAG, "getDefinition-error: " + error));
+                listener,
+                errorListener);
         addToRequestQueue(request);
     }
 

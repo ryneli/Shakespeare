@@ -1,25 +1,22 @@
 package com.zhenqiangli.shakespeare.data;
 
+import static java.lang.Math.min;
+
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Chapters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Characters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Math.min;
 
 /**
  * Created by zhenqiangli on 7/26/17.

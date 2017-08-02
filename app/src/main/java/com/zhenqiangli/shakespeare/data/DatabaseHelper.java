@@ -1,13 +1,12 @@
 package com.zhenqiangli.shakespeare.data;
 
 import android.content.Context;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,10 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         mDatabasePath = mContext.getApplicationInfo().dataDir
             + "/databases/";
         boolean existed = checkDatabase();
-        if (existed) {
-            //System.out.println("Database exists");
-            openDatabase();
-        } else {
+        if (!existed) {
             System.out.println("Database doesn't exist");
             try {
                 createDatabase();
@@ -43,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
+        openDatabase();
     }
 
     @Override
@@ -55,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onUpgrade: ");
     }
 
+    @NonNull
     public SQLiteDatabase getWritableDatabase() {
         return mDataBase;
     }

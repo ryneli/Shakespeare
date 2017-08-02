@@ -54,7 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void createDatabase() throws IOException {
-        Log.d(TAG, "createDatabase: ");
         boolean existed = checkDatabase();
         if(!existed) {
             this.getReadableDatabase();
@@ -67,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "ALTER TABLE " + Works.NAME +
             " ADD COLUMN " + Cols.LAST_ACCESS + " int";
+        Log.d(TAG, "createDatabase: " + sql);
         db.execSQL(sql);
         db.setVersion(DATABASE_VERSION_BASE);
         db.close();
@@ -76,11 +76,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean checked = false;
         try {
             String filePath = mDatabasePath + DATABASE_NAME;
+            Log.d(TAG, "checkDatabase: " + filePath);
             File file = new File(filePath);
             checked = file.exists();
+
+            // TODO: for debug
+            /*
+            if (checked) {
+                file.delete();
+            }
+            checked = false;
+            */
         } catch(SQLiteException e) {
             Log.d(TAG, "checkDatabase: Database doesn't exist");
         }
+        Log.d(TAG, "checkDatabase: " + checked);
         return checked;
     }
 

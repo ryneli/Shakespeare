@@ -4,6 +4,7 @@ import static com.android.volley.VolleyLog.TAG;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,19 +15,21 @@ import org.jsoup.select.Elements;
  */
 
 public class JsoupRequester {
-  public static void test() {
+  private static int EN_BASE = 2;
+  private static int CN_BASE = 35;
+  private static String FORMAT = "http://en.eywedu.net/LMOYZLY/420k0020zw_%04d.htm";
+
+  private static void get(int i) {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... params) {
         try {
-          String url = "http://en.eywedu.net/LMOYZLY/420k0020zw_0039.htm";
+          String url = String.format(Locale.US, FORMAT, i);
           Document document = Jsoup.connect(url).get();
-          Log.d(TAG, "test: " + document.title());
-          Elements elements = document.select("font");
+          Elements elements = document.select("p[style=\"text-indent:2em;text-align:justify\"]");
+          Log.d(TAG, String.format("Title %s, lines(%s)", document.title(), elements.size()));
           for (Element element : elements) {
-            if (!element.text().trim().equals("")) {
-              Log.d(TAG, "test: \t" + element.text());
-            }
+            Log.d(TAG, "test: \t" + element.text());
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -34,5 +37,11 @@ public class JsoupRequester {
         return null;
       }
     }.execute();
+  }
+  public static void test() {
+    for (int i = 0; i < 33; i++) {
+      get(EN_BASE+i);
+      get(CN_BASE+i);
+    }
   }
 }

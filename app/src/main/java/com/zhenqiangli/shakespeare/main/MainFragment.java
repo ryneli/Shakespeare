@@ -44,11 +44,17 @@ public class MainFragment extends Fragment implements MainContract.View {
     DividerItemDecoration itemDecoration = new DividerItemDecoration(worksView.getContext(),
             linearLayoutManager.getOrientation());
     worksView.addItemDecoration(itemDecoration);
+    return view;
+  }
+
+  @Override
+  public void showWorkList(List<DramaSummary> dramaSummaryList) {
+    worksView.setAdapter(new WorksAdapter(dramaSummaryList, getActivity()));
     worksView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), worksView, new RecyclerItemClickListener.OnItemClickListener() {
       @Override
       public void onItemClick(View view, int position) {
         Log.d(TAG, "onItemClick: " + position);
-        startActivity(SceneActivity.newIntent(getActivity(), position, 0));
+        startActivity(SceneActivity.newIntent(getActivity(), dramaSummaryList.get(position).getWorkId(), 0));
       }
 
       @Override
@@ -56,12 +62,6 @@ public class MainFragment extends Fragment implements MainContract.View {
 
       }
     }));
-    return view;
-  }
-
-  @Override
-  public void showWorkList(List<DramaSummary> dramaSummaryList) {
-    worksView.setAdapter(new WorksAdapter(dramaSummaryList, getActivity()));
   }
 
   @Override

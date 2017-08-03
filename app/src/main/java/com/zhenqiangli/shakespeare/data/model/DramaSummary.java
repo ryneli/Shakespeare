@@ -10,13 +10,15 @@ public class DramaSummary {
   int year;
   String genre;
   int lastAccess;
+  int workId;
 
-  public DramaSummary(String title, String subtitle, int year, String genre, int lastAccess) {
+  public DramaSummary(String title, String subtitle, int year, String genre, int lastAccess, int workId) {
     this.title = title;
     this.subtitle = subtitle;
     this.year = year;
     this.genre = genre;
     this.lastAccess = lastAccess;
+    this.workId = workId;
   }
 
   public String getTitle() {
@@ -57,5 +59,13 @@ public class DramaSummary {
 
   public void setLastAccess(int lastAccess) {
     this.lastAccess = lastAccess;
+  }
+
+  public int getWorkId() {
+    return workId;
+  }
+
+  public void setWorkId(int workId) {
+    this.workId = workId;
   }
 }

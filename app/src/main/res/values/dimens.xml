@@ -3,4 +3,5 @@
     <dimen name="book_item_height">64dp</dimen>
     <dimen name="book_item_margin">16dp</dimen>
     <dimen name="dialog_height"> 64dp </dimen>
+    <dimen name="toolbar_title_size"> 20sp </dimen>
 </resources>

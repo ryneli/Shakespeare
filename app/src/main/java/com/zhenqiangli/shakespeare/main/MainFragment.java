@@ -1,7 +1,5 @@
 package com.zhenqiangli.shakespeare.main;
 
-import static com.android.volley.VolleyLog.TAG;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +17,7 @@ import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.scene.SceneActivity;
 import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
-
+import com.zhenqiangli.shakespeare.util.TimeUtil;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,7 +118,7 @@ public class MainFragment extends Fragment implements MainContract.View {
           dramaSummary.getSubtitle(),
           dramaSummary.getGenre(),
           dramaSummary.getYear(),
-          dramaSummary.getLastAccess()));
+          TimeUtil.getDate(dramaSummary.getLastAccess())));
     }
   }
 }

@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         SQLiteDatabase db = getWritableDatabase();
         String sql = "ALTER TABLE " + Works.NAME +
-            " ADD COLUMN " + Cols.LAST_ACCESS + " int";
+            " ADD COLUMN " + Cols.LAST_ACCESS + " INTEGER";
         Log.d(TAG, "createDatabase: " + sql);
         db.execSQL(sql);
         db.setVersion(DATABASE_VERSION_BASE);

@@ -12,8 +12,7 @@ import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
-
-import java.util.Calendar;
+import com.zhenqiangli.shakespeare.util.TimeUtil;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,7 +116,7 @@ public class DataRepository {
 
   public void updateDramaAccessTime(int workId) {
     ContentValues contentValues = new ContentValues();
-    contentValues.put(Works.Cols.LAST_ACCESS, Calendar.getInstance().getTimeInMillis());
+    contentValues.put(Works.Cols.LAST_ACCESS, TimeUtil.now());
     database.update(
             Works.NAME,
             contentValues,

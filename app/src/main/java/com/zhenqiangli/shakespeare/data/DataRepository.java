@@ -22,7 +22,6 @@ import java.util.Map;
 
 public class DataRepository {
   SQLiteDatabase database;
-  private static final int WORK_BASE_INDEX = 1;
   private Map<Integer, Drama> dramas = new HashMap<>();
   private static final String TAG = "DataRepository";
   private static DataRepository INSTANCE;
@@ -68,7 +67,6 @@ public class DataRepository {
   }
 
   public Drama getDrama(int i) {
-      i += WORK_BASE_INDEX;
     if (!dramas.containsKey(i)) {
     /* select  */
       String sql = "select " + TextUtils.join(", ", SELECT_COLUMNS)
@@ -92,7 +90,8 @@ public class DataRepository {
       Works.Cols.LONG_TITLE,
       Works.Cols.YEAR,
       Works.Cols.GENRE,
-      Works.Cols.LAST_ACCESS
+      Works.Cols.LAST_ACCESS,
+      Works.Cols.ID,
   };
 
   public List<DramaSummary> getDramaSummaryList() {
@@ -106,7 +105,8 @@ public class DataRepository {
           cursor.getString(1),
           cursor.getInt(2),
           cursor.getString(3),
-          cursor.getInt(4)));
+          cursor.getInt(4),
+          cursor.getInt(5)));
     }
     cursor.close();
     return res;

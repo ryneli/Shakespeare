@@ -26,5 +26,6 @@ public class ScenePresenter implements Presenter {
   @Override
   public void openWork(int sceneIndex) {
     view.showDrama(dataRepository.getDrama(workIndex), sceneIndex);
+    dataRepository.updateDramaAccessTime(workIndex);
   }
 }

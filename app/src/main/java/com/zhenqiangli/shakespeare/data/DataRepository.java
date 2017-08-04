@@ -1,5 +1,6 @@
 package com.zhenqiangli.shakespeare.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,8 @@ import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs.Cols;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
+
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,7 +99,7 @@ public class DataRepository {
 
   public List<DramaSummary> getDramaSummaryList() {
     String sql = "select " + TextUtils.join(", ", DRAMA_SUMMARY_COLUMNS)
-        + " from " + Works.NAME;
+        + " from " + Works.NAME + " order by " + Works.Cols.LAST_ACCESS + " desc";
     Cursor cursor = database.rawQuery(sql, null);
     List<DramaSummary> res = new LinkedList<>();
     while (cursor.moveToNext()) {
@@ -110,5 +113,16 @@ public class DataRepository {
     }
     cursor.close();
     return res;
+  }
+
+  public void updateDramaAccessTime(int workId) {
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(Works.Cols.LAST_ACCESS, Calendar.getInstance().getTimeInMillis());
+    database.update(
+            Works.NAME,
+            contentValues,
+            Works.Cols.ID + " = " + workId,
+            null
+    );
   }
 }

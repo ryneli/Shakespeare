@@ -19,6 +19,8 @@ import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.scene.SceneActivity;
 import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
+
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,8 +28,10 @@ import java.util.List;
  */
 
 public class MainFragment extends Fragment implements MainContract.View {
+  private static final String TAG = "MainFragment";
   Presenter presenter;
   RecyclerView worksView;
+  WorksAdapter adapter;
 
   public static MainFragment newInstance() {
     return new MainFragment();
@@ -44,24 +48,16 @@ public class MainFragment extends Fragment implements MainContract.View {
     DividerItemDecoration itemDecoration = new DividerItemDecoration(worksView.getContext(),
             linearLayoutManager.getOrientation());
     worksView.addItemDecoration(itemDecoration);
+    adapter = new WorksAdapter(getActivity());
+    worksView.setAdapter(adapter);
     return view;
   }
 
   @Override
   public void showWorkList(List<DramaSummary> dramaSummaryList) {
-    worksView.setAdapter(new WorksAdapter(dramaSummaryList, getActivity()));
-    worksView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), worksView, new RecyclerItemClickListener.OnItemClickListener() {
-      @Override
-      public void onItemClick(View view, int position) {
-        Log.d(TAG, "onItemClick: " + position);
-        startActivity(SceneActivity.newIntent(getActivity(), dramaSummaryList.get(position).getWorkId(), 0));
-      }
-
-      @Override
-      public void onLongItemClick(View view, int position) {
-
-      }
-    }));
+    Log.d(TAG, "showWorkList: ");
+    adapter.setDramaSummaryList(dramaSummaryList);
+    worksView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), worksView, adapter));
   }
 
   @Override
@@ -69,13 +65,17 @@ public class MainFragment extends Fragment implements MainContract.View {
     this.presenter = presenter;
   }
 
-  private class WorksAdapter extends RecyclerView.Adapter<WorkViewHolder> {
-    List<DramaSummary> dramaSummaryList;
+  private class WorksAdapter extends RecyclerView.Adapter<WorkViewHolder> implements RecyclerItemClickListener.OnItemClickListener {
+    List<DramaSummary> dramaSummaryList = new LinkedList<>();
     Context context;
 
-    public WorksAdapter(List<DramaSummary> dramaSummaryList, Context context) {
-      this.dramaSummaryList = dramaSummaryList;
+    public WorksAdapter(Context context) {
       this.context = context;
+    }
+
+    public void setDramaSummaryList(List<DramaSummary> dramaSummaryList) {
+      this.dramaSummaryList = dramaSummaryList;
+      notifyDataSetChanged();
     }
 
     @Override
@@ -92,6 +92,17 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public int getItemCount() {
       return dramaSummaryList.size();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+      Log.d(TAG, "onItemClick: " + position);
+      startActivity(SceneActivity.newIntent(getActivity(), dramaSummaryList.get(position).getWorkId(), 0));
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+      Log.d(TAG, "onLongItemClick: " + position);
     }
   }
 

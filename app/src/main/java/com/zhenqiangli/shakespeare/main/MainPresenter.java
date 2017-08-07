@@ -12,8 +12,13 @@ public class MainPresenter implements MainContract.Presenter {
   View view;
 
   @Override
-  public void openWorkList() {
-    view.showWorkList(dataRepository.getDramaSummaryList());
+  public void openDramaList() {
+    view.showDramaList(dataRepository.getDramaSummaryList());
+  }
+
+  @Override
+  public void openDrama(int workIndex, int sceneIndex) {
+    view.showDrama(workIndex, sceneIndex);
   }
 
   public MainPresenter(DataRepository dataRepository, View view) {

@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by zhenqiangli on 7/26/17.
+ * View for MainActivity
  */
 
 public class MainFragment extends Fragment implements MainContract.View {
@@ -52,10 +52,15 @@ public class MainFragment extends Fragment implements MainContract.View {
   }
 
   @Override
-  public void showWorkList(List<DramaSummary> dramaSummaryList) {
-    Log.d(TAG, "showWorkList: ");
+  public void showDramaList(List<DramaSummary> dramaSummaryList) {
+    Log.d(TAG, "showDramaList: ");
     adapter.setDramaSummaryList(dramaSummaryList);
     worksView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), worksView, adapter));
+  }
+
+  @Override
+  public void showDrama(int workIndex, int sceneIndex) {
+    startActivity(SceneActivity.newIntent(getActivity(), workIndex, sceneIndex));
   }
 
   @Override
@@ -67,11 +72,11 @@ public class MainFragment extends Fragment implements MainContract.View {
     List<DramaSummary> dramaSummaryList = new LinkedList<>();
     Context context;
 
-    public WorksAdapter(Context context) {
+    WorksAdapter(Context context) {
       this.context = context;
     }
 
-    public void setDramaSummaryList(List<DramaSummary> dramaSummaryList) {
+    void setDramaSummaryList(List<DramaSummary> dramaSummaryList) {
       this.dramaSummaryList = dramaSummaryList;
       notifyDataSetChanged();
     }
@@ -95,7 +100,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public void onItemClick(View view, int position) {
       Log.d(TAG, "onItemClick: " + position);
-      startActivity(SceneActivity.newIntent(getActivity(), dramaSummaryList.get(position).getWorkId(), 0));
+      presenter.openDrama(dramaSummaryList.get(position).getWorkId(), 0);
     }
 
     @Override

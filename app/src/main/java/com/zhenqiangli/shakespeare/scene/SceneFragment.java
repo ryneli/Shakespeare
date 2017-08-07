@@ -32,6 +32,7 @@ import java.util.List;
 
 public class SceneFragment extends Fragment implements SceneContract.View {
   private static final String TAG = "SceneFragment";
+  private static final String TAG_WORD_DEFINITION_FRAGMENT = "WordDefFragment";
 
   private SceneViewAdapter adapter;
   private Presenter presenter;
@@ -65,7 +66,6 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     adapter.setDrama(drama, sceneIndex);
   }
 
-  private static final String TAG_WORD_DEFINITION_FRAGMENT = "WordDefFragment";
   private void showDefinition(String word) {
     WordDefFragment fragment = (WordDefFragment) getActivity().getSupportFragmentManager()
         .findFragmentByTag(TAG_WORD_DEFINITION_FRAGMENT);

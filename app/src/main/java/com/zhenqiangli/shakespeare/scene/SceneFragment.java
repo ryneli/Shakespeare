@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +31,11 @@ import java.util.List;
 
 public class SceneFragment extends Fragment implements SceneContract.View {
   private static final String TAG = "SceneFragment";
-  private static final String TAG_WORD_DEFINITION_FRAGMENT = "WordDefFragment";
+  private Callbacks callbacks;
+
+  public interface Callbacks {
+    void showDefinition(String word);
+  }
 
   private SceneViewAdapter adapter;
   private Presenter presenter;
@@ -57,6 +60,18 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   }
 
   @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    callbacks = (Callbacks) context;
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    callbacks = null;
+  }
+
+  @Override
   public void setPresenter(Presenter presenter) {
     this.presenter = presenter;
   }
@@ -66,16 +81,9 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     adapter.setDrama(drama, sceneIndex);
   }
 
-  private void showDefinition(String word) {
-    WordDefFragment fragment = (WordDefFragment) getActivity().getSupportFragmentManager()
-        .findFragmentByTag(TAG_WORD_DEFINITION_FRAGMENT);
-    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-    if (fragment != null) {
-      ft.remove(fragment);
-    }
-    ft.addToBackStack(null);
-
-    WordDefFragment.newInstance(word).show(ft, TAG_WORD_DEFINITION_FRAGMENT);
+  @Override
+  public void showDefinition(String word) {
+    callbacks.showDefinition(word);
   }
 
   private class SceneViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
@@ -177,7 +185,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
     @Override
     public void onClick(View widget) {
-      showDefinition(word);
+      presenter.openDefinition(word);
     }
 
     @Override

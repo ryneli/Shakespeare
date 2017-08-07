@@ -1,6 +1,5 @@
 package com.zhenqiangli.shakespeare.scene;
 
-import static android.R.attr.max;
 import static com.android.volley.VolleyLog.TAG;
 
 import android.content.Context;
@@ -9,32 +8,27 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
-import com.zhenqiangli.shakespeare.data.dictionary.Definition;
+import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
 import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
-import com.zhenqiangli.shakespeare.network.EnglishDefinitionRequester;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
- * Created by zhenqiangli on 8/2/17.
+ * Definition Fragment.
  */
 
-public class WordDefFragment extends DialogFragment {
+public class DefinitionFragment extends DialogFragment {
+
   private static final String ARGUMENT_WORD = "word";
   private RecyclerView definitionsView;
-  private DefinitionsAdapter adapter;
   private String word;
 
-  public static WordDefFragment newInstance(String word) {
-    WordDefFragment fragment = new WordDefFragment();
+  public static DefinitionFragment newInstance(String word) {
+    DefinitionFragment fragment = new DefinitionFragment();
     Bundle args = new Bundle();
     args.putString(ARGUMENT_WORD, word);
     fragment.setArguments(args);
@@ -48,106 +42,117 @@ public class WordDefFragment extends DialogFragment {
     word = getArguments().getString(ARGUMENT_WORD);
     View v = inflater.inflate(R.layout.fragment_word_definition, container, false);
     definitionsView = (RecyclerView) v.findViewById(R.id.word_definition);
-    adapter = new DefinitionsAdapter(getActivity(), word);
     definitionsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    definitionsView.setAdapter(adapter);
     return v;
   }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ChineseDefinitionRequester.getDefinition(word, result -> {
-      int maxLen = result.getDefinition().size();
-      if (maxLen > 3) {
-        maxLen = 3;
-      }
-
-      List<Definition> defs = new LinkedList<>();
-      for (int i = 0; i < maxLen; i++) {
-        Definition def = new Definition();
-        def.setText(result.getDefinition().get(i));
-        defs.add(def);
-      }
-      adapter.setDefinitions(defs);
-    });
+    ChineseDefinitionRequester.getDefinition(word,
+        result -> definitionsView.setAdapter(
+            new DefinitionsAdapter(getActivity(), result.getWordInfo())));
   }
 
   private static class DefinitionsAdapter extends RecyclerView.Adapter<TextViewHolder> {
-    private Context context;
-    private String word;
-    private List<Definition> definitions = new LinkedList<>();
-    private static final int TYPE_HEADER = 1;
-    private static final int TYPE_DEFINITION = 2;
 
-    DefinitionsAdapter(Context context, String word) {
+    private Context context;
+    private WordInfo wordInfo;
+    private static final int TYPE_KEYWORD = 1;
+    private static final int TYPE_PRONUNCIATION = 2;
+    private static final int TYPE_DEFINITION = 3;
+
+    DefinitionsAdapter(Context context, WordInfo wordInfo) {
       super();
       this.context = context;
-      this.word = word;
+      this.wordInfo = wordInfo;
     }
 
     @Override
     public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       View v = LayoutInflater.from(context).inflate(R.layout.item_word_definition, parent, false);
-      if (viewType == TYPE_HEADER) {
-        return new HeaderViewHolder(v);
-      } else {
-        return new DefinitionViewHolder(v);
+      switch (viewType) {
+        case TYPE_KEYWORD:
+          return new KeywordViewHolder(v);
+        case TYPE_PRONUNCIATION:
+          return new PronunciationViewHolder(v);
+        case TYPE_DEFINITION:
+          return new DefinitionViewHolder(v);
+        default:
+          Log.e(TAG, "onCreateViewHolder: unknown type");
+          return null;
       }
     }
 
     @Override
     public void onBindViewHolder(TextViewHolder holder, int position) {
-      if (holder instanceof HeaderViewHolder) {
-        ((HeaderViewHolder)holder).bind(word);
+      if (holder instanceof KeywordViewHolder) {
+        Log.d(TAG, "onBindViewHolder: 1 " + position);
+        ((KeywordViewHolder) holder).bind(wordInfo.getKeyword());
+      } else if (holder instanceof PronunciationViewHolder) {
+        Log.d(TAG, "onBindViewHolder: 2 " + position);
+        ((PronunciationViewHolder) holder).bind(wordInfo.getPronunciation());
       } else if (holder instanceof DefinitionViewHolder) {
-        ((DefinitionViewHolder)holder).bind(definitions.get(position-1));
+        Log.d(TAG, "onBindViewHolder: 3 " + position);
+        ((DefinitionViewHolder) holder).bind(wordInfo.getDefinitions().get(position - 1 - 1));
       }
     }
 
     @Override
     public int getItemCount() {
-      return 1 + definitions.size(); /* header + definitions */
+      return 1 + 1 + wordInfo.getDefinitions().size(); /* keyword + pronunciation + definitions */
     }
 
     @Override
     public int getItemViewType(int position) {
       if (position == 0) {
-         return TYPE_HEADER;
+        return TYPE_KEYWORD;
+      } else if (position == 1) {
+        return TYPE_PRONUNCIATION;
       } else {
         return TYPE_DEFINITION;
       }
     }
-
-    void setDefinitions(List<Definition> definitions) {
-      this.definitions = definitions;
-      notifyDataSetChanged();
-    }
   }
 
-  private static class HeaderViewHolder extends TextViewHolder {
-    HeaderViewHolder(View v) {
+  private static class KeywordViewHolder extends TextViewHolder {
+
+    KeywordViewHolder(View v) {
       super(v);
     }
 
     void bind(String word) {
-      Log.d(TAG, "bind: HeaderViewHolder(" + word + ")");
+      Log.d(TAG, "bind: KeywordViewHolder(" + word + ")");
       textView.setText(word);
     }
   }
 
+  private static class PronunciationViewHolder extends TextViewHolder {
+
+    PronunciationViewHolder(View v) {
+      super(v);
+    }
+
+    void bind(String pron) {
+      textView.setText(pron);
+    }
+  }
+
   private static class DefinitionViewHolder extends TextViewHolder {
+
     DefinitionViewHolder(View v) {
       super(v);
     }
 
-    void bind(Definition def) {
-      textView.setText(Html.fromHtml(def.getText()));
+    void bind(String def) {
+      textView.setText(def);
     }
   }
 
   private static abstract class TextViewHolder extends RecyclerView.ViewHolder {
+
     TextView textView;
+
     TextViewHolder(View v) {
       super(v);
       textView = (TextView) v.findViewById(R.id.text_view);

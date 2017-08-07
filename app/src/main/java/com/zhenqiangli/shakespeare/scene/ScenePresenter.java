@@ -19,6 +19,11 @@ public class ScenePresenter implements Presenter {
   }
 
   @Override
+  public void openDefinition(String word) {
+    view.showDefinition(word);
+  }
+
+  @Override
   public void start() {
 
   }

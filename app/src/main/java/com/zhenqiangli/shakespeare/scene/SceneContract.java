@@ -11,8 +11,10 @@ import com.zhenqiangli.shakespeare.data.model.Drama;
 public interface SceneContract {
   interface View extends BaseView<Presenter> {
     void showDrama(Drama drama, int sceneIndex);
+    void showDefinition(String word);
   }
   interface Presenter extends BasePresenter {
     void openWork(int sceneIndex);
+    void openDefinition(String word);
   }
 }

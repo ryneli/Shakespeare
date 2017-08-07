@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import com.zhenqiangli.shakespeare.R;
@@ -13,10 +14,12 @@ import com.zhenqiangli.shakespeare.data.DataRepository;
  * Created by zhenqiangli on 7/26/17.
  */
 
-public class SceneActivity extends AppCompatActivity {
+public class SceneActivity extends AppCompatActivity implements SceneFragment.Callbacks {
   private static final String TAG = "SceneActivity";
   private static final String EXTRA_WORK = "work";
   private static final String EXTRA_SCENE = "scene";
+  private static final String TAG_WORD_DEFINITION_FRAGMENT = "DefinitionFragment";
+
   private SceneFragment fragment;
   private ScenePresenter presenter;
 
@@ -56,5 +59,18 @@ public class SceneActivity extends AppCompatActivity {
     int scene = intent.getIntExtra(EXTRA_SCENE, 0);
     Log.d(TAG, "onResume: " + work + " " + scene);
     presenter.openWork(scene);
+  }
+
+  @Override
+  public void showDefinition(String word) {
+    DefinitionFragment fragment = (DefinitionFragment) getSupportFragmentManager()
+        .findFragmentByTag(TAG_WORD_DEFINITION_FRAGMENT);
+    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    if (fragment != null) {
+      ft.remove(fragment);
+    }
+    ft.addToBackStack(null);
+
+    DefinitionFragment.newInstance(word).show(ft, TAG_WORD_DEFINITION_FRAGMENT);
   }
 }

@@ -41,8 +41,23 @@ public class ChineseDefinitionRequester {
                 List<String> result = new LinkedList<>();
                 try {
                     Document document = Jsoup.connect(LINK_BASE + word).get();
-                    Elements es = document.getElementsByClass("prop");
-                    for (Element e : es) {
+                    Elements keywords = document.select("h1.keyword");
+                    for (Element e : keywords) {
+                        Log.d(TAG, "doInBackground: word " + e.text());
+                    }
+
+                    Elements prons = document.select("div.base-top-voice > div.base-speak");
+                    for (Element e : prons) {
+                        result.add(e.text());
+                    }
+
+                    Elements sounds = document.select("i.new-speak-step");
+                    for (Element e : sounds) {
+                        Log.d(TAG, "doInBackground: " + e.attr("ms-on-mouseover"));
+                    }
+
+                    Elements defs = document.getElementsByClass("prop");
+                    for (Element e : defs) {
                         Element next = e.nextElementSibling();
                         result.add(next.text());
                     }

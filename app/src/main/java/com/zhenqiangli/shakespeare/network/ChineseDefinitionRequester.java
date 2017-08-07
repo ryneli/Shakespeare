@@ -2,15 +2,15 @@ package com.zhenqiangli.shakespeare.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
+import com.zhenqiangli.shakespeare.data.DictDataRepository.GetDefinitionCallback;
+import com.zhenqiangli.shakespeare.data.DictDataRepository.GetDefinitionResult;
 import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
+import java.util.LinkedList;
+import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by zhenqiangli on 8/6/17.
@@ -19,14 +19,6 @@ import java.util.List;
 public class ChineseDefinitionRequester {
     private static final String TAG = "ChineseDefinition";
     private static final String LINK_BASE = "http://www.iciba.com/";
-
-    public interface GetDefinitionResult {
-        WordInfo getWordInfo();
-    }
-
-    public interface GetDefinitionCallback {
-        void run(GetDefinitionResult result);
-    }
 
     private static String cleanWord(String word) {
         return word.replaceAll("[^a-zA-Z']", "");
@@ -38,6 +30,7 @@ public class ChineseDefinitionRequester {
          new AsyncTask<String, Void, GetDefinitionResult>() {
             @Override
             protected GetDefinitionResult doInBackground(String... words) {
+                WordInfo wordInfo = new WordInfo();
                 String word = words[0];
                 String keyword = "", pronunciation = "";
                 List<String> definitions = new LinkedList<>();
@@ -47,30 +40,32 @@ public class ChineseDefinitionRequester {
                     for (Element e : keywords) {
                         keyword += e.text();
                     }
+                    wordInfo.setKeyword(keyword);
 
-                    Elements prons = document.select("div.base-top-voice > div.base-speak");
-                    for (Element e : prons) {
-                        pronunciation += e.text();
+                    Elements prons = document.select("div.base-top-voice > div.base-speak > span > span");
+                    if (prons.size() > 0) {
+                        wordInfo.setPronEn(prons.get(0).text());
+                    }
+                    if (prons.size() > 1) {
+                        wordInfo.setPronAm(prons.get(1).text());
                     }
 
-
-
                     Elements sounds = document.select("i.new-speak-step");
-                    for (Element e : sounds) {
-                        Log.d(TAG, "doInBackground: " + e.attr("ms-on-mouseover"));
+                    if (sounds.size() > 0) {
+                        wordInfo.setSoundEn(sounds.get(0).text());
+                    }
+                    if (sounds.size() > 1) {
+                        wordInfo.setSoundAm(sounds.get(1).text());
                     }
 
                     Elements defs = document.getElementsByClass("prop");
                     for (Element e : defs) {
                         Element next = e.nextElementSibling();
-                        definitions.add(next.text());
+                        wordInfo.addDefinition(next.text());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                WordInfo wordInfo = new WordInfo(keyword, pronunciation);
-                wordInfo.setDefinitions(definitions);
                 return () -> wordInfo;
             }
 

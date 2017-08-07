@@ -9,21 +9,53 @@ import java.util.List;
 
 public class WordInfo {
   private String keyword;
-  private String pronunciation;
-  private List<String> definitions;
+  private String pronEn;
+  private String pronAm;
+  private String soundEn;
+  private String soundAm;
+  private List<String> definitions = new LinkedList<>();
 
-  public WordInfo(String keyword, String pronunciation) {
-    this.keyword = keyword;
-    this.pronunciation = pronunciation;
-    this.definitions = new LinkedList<>();
+  public String getPronEn() {
+    return pronEn;
+  }
+
+  public String getPronAm() {
+    return pronAm;
+  }
+
+  public String getSoundEn() {
+    return soundEn;
+  }
+
+  public String getSoundAm() {
+    return soundAm;
+  }
+
+  public WordInfo() {
   }
 
   public String getKeyword() {
     return keyword;
   }
 
+  public void setPronEn(String pronEn) {
+    this.pronEn = pronEn;
+  }
+
+  public void setPronAm(String pronAm) {
+    this.pronAm = pronAm;
+  }
+
+  public void setSoundEn(String soundEn) {
+    this.soundEn = soundEn;
+  }
+
+  public void setSoundAm(String soundAm) {
+    this.soundAm = soundAm;
+  }
+
   public String getPronunciation() {
-    return pronunciation;
+    return pronEn + "\n" + pronAm;
   }
 
   public List<String> getDefinitions() {
@@ -32,10 +64,6 @@ public class WordInfo {
 
   public void setKeyword(String keyword) {
     this.keyword = keyword;
-  }
-
-  public void setPronunciation(String pronunciation) {
-    this.pronunciation = pronunciation;
   }
 
   public void addDefinition(String definition) {

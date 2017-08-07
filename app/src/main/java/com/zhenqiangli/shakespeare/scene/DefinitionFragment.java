@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
+import com.zhenqiangli.shakespeare.data.DictDataRepository;
 import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
-import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
 
 /**
  * Definition Fragment.
@@ -49,7 +49,7 @@ public class DefinitionFragment extends DialogFragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ChineseDefinitionRequester.getDefinition(word,
+    DictDataRepository.get(getActivity()).getDefinition(word,
         result -> definitionsView.setAdapter(
             new DefinitionsAdapter(getActivity(), result.getWordInfo())));
   }

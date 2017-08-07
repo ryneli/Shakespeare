@@ -22,14 +22,14 @@ import java.util.Map;
  * Created by zhenqiangli on 7/30/17.
  */
 // https://developer.android.com/training/volley/requestqueue.html
-public class VolleyRequester {
-    private static final String TAG = "VolleyRequester";
-    private static VolleyRequester INSTANCE;
+public class EnglishDefinitionRequester {
+    private static final String TAG = "EnglishDefinitionRequester";
+    private static EnglishDefinitionRequester INSTANCE;
     private Context context;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
 
-    private VolleyRequester(Context context) {
+    private EnglishDefinitionRequester(Context context) {
         this.context = context;
         this.requestQueue = getRequestQueue();
         this.imageLoader = new ImageLoader(requestQueue,
@@ -48,9 +48,9 @@ public class VolleyRequester {
                 });
     }
 
-    public static synchronized VolleyRequester getInstance(Context context) {
+    public static synchronized EnglishDefinitionRequester getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new VolleyRequester(context);
+            INSTANCE = new EnglishDefinitionRequester(context);
         }
         return INSTANCE;
     }

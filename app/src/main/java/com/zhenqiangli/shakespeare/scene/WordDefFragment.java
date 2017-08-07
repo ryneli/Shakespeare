@@ -1,5 +1,6 @@
 package com.zhenqiangli.shakespeare.scene;
 
+import static android.R.attr.max;
 import static com.android.volley.VolleyLog.TAG;
 
 import android.content.Context;
@@ -16,7 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.dictionary.Definition;
-import com.zhenqiangli.shakespeare.network.VolleyRequester;
+import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
+import com.zhenqiangli.shakespeare.network.EnglishDefinitionRequester;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,19 +57,20 @@ public class WordDefFragment extends DialogFragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    VolleyRequester.getInstance(getActivity()).getDefinition(word,
-        response -> {
-          if (response.length > 3) {
-            List<Definition> defs = new LinkedList<>();
-            for (int i = 0; i < 3; i++) {
-              defs.add(response[i]);
-            }
-            adapter.setDefinitions(defs);
-          } else {
-            adapter.setDefinitions(Arrays.asList(response));
-          }
-        },
-        error -> Log.d(TAG, "onViewCreated: get definition error"));
+    ChineseDefinitionRequester.getDefinition(word, result -> {
+      int maxLen = result.getDefinition().size();
+      if (maxLen > 3) {
+        maxLen = 3;
+      }
+
+      List<Definition> defs = new LinkedList<>();
+      for (int i = 0; i < maxLen; i++) {
+        Definition def = new Definition();
+        def.setText(result.getDefinition().get(i));
+        defs.add(def);
+      }
+      adapter.setDefinitions(defs);
+    });
   }
 
   private static class DefinitionsAdapter extends RecyclerView.Adapter<TextViewHolder> {

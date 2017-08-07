@@ -2,11 +2,15 @@ package com.zhenqiangli.shakespeare.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
+import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     MainFragment fragment;
     Presenter presenter;
 
@@ -24,8 +28,18 @@ public class MainActivity extends AppCompatActivity {
         presenter = new MainPresenter(DataRepository.get(this), fragment);
         fragment.setPresenter(presenter);
 
-        // VolleyRequester.getInstance(this).getDefinition("ambition");
-        // JsoupRequester.test();
+        // EnglishDefinitionRequester.getInstance(this).getDefinition("ambition");
+        // ChineseDramaRequester.test();
+        /*
+        ChineseDefinitionRequester.getDefinition("infinity", new ChineseDefinitionRequester.GetDefinitionCallback() {
+            @Override
+            public void run(ChineseDefinitionRequester.GetDefinitionResult result) {
+                for (String def : result.getDefinition()) {
+                    Log.d(TAG, "run: " + def);
+                }
+            }
+        });
+        */
     }
 
     @Override

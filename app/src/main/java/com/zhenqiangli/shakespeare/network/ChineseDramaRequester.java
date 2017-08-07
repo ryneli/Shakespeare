@@ -14,7 +14,7 @@ import org.jsoup.select.Elements;
  * Created by zhenqiangli on 7/31/17.
  */
 
-public class JsoupRequester {
+public class ChineseDramaRequester {
   private static int EN_BASE = 2;
   private static int CN_BASE = 35;
   private static String FORMAT = "http://en.eywedu.net/LMOYZLY/420k0020zw_%04d.htm";

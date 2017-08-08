@@ -54,7 +54,7 @@ public class DefinitionFragment extends DialogFragment {
             new DefinitionsAdapter(getActivity(), result.getWordInfo())));
   }
 
-  private static class DefinitionsAdapter extends RecyclerView.Adapter<TextViewHolder> {
+  private static class DefinitionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private WordInfo wordInfo;
@@ -69,14 +69,17 @@ public class DefinitionFragment extends DialogFragment {
     }
 
     @Override
-    public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View v = LayoutInflater.from(context).inflate(R.layout.item_word_definition, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      View v;
       switch (viewType) {
         case TYPE_KEYWORD:
+          v = LayoutInflater.from(context).inflate(R.layout.item_word_definition, parent, false);
           return new KeywordViewHolder(v);
         case TYPE_PRONUNCIATION:
+          v = LayoutInflater.from(context).inflate(R.layout.item_word_pronunciation, parent, false);
           return new PronunciationViewHolder(v);
         case TYPE_DEFINITION:
+          v = LayoutInflater.from(context).inflate(R.layout.item_word_definition, parent, false);
           return new DefinitionViewHolder(v);
         default:
           Log.e(TAG, "onCreateViewHolder: unknown type");
@@ -85,13 +88,13 @@ public class DefinitionFragment extends DialogFragment {
     }
 
     @Override
-    public void onBindViewHolder(TextViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
       if (holder instanceof KeywordViewHolder) {
         Log.d(TAG, "onBindViewHolder: 1 " + position);
         ((KeywordViewHolder) holder).bind(wordInfo.getKeyword());
       } else if (holder instanceof PronunciationViewHolder) {
         Log.d(TAG, "onBindViewHolder: 2 " + position);
-        ((PronunciationViewHolder) holder).bind(wordInfo.getPronunciation());
+        ((PronunciationViewHolder) holder).bind(wordInfo);
       } else if (holder instanceof DefinitionViewHolder) {
         Log.d(TAG, "onBindViewHolder: 3 " + position);
         ((DefinitionViewHolder) holder).bind(wordInfo.getDefinitions().get(position - 1 - 1));
@@ -115,10 +118,11 @@ public class DefinitionFragment extends DialogFragment {
     }
   }
 
-  private static class KeywordViewHolder extends TextViewHolder {
-
+  private static class KeywordViewHolder extends RecyclerView.ViewHolder {
+    TextView textView;
     KeywordViewHolder(View v) {
       super(v);
+      textView = (TextView) v.findViewById(R.id.text_view);
     }
 
     void bind(String word) {
@@ -127,35 +131,31 @@ public class DefinitionFragment extends DialogFragment {
     }
   }
 
-  private static class PronunciationViewHolder extends TextViewHolder {
+  private static class PronunciationViewHolder extends RecyclerView.ViewHolder {
+    TextView enTextView;
+    TextView amTextView;
 
     PronunciationViewHolder(View v) {
       super(v);
+      enTextView = (TextView) v.findViewById(R.id.tv_en);
+      amTextView = (TextView) v.findViewById(R.id.tv_am);
     }
 
-    void bind(String pron) {
-      textView.setText(pron);
+    void bind(WordInfo wordInfo) {
+      enTextView.setText(wordInfo.getPronEn());
+      amTextView.setText(wordInfo.getPronAm());
     }
   }
 
-  private static class DefinitionViewHolder extends TextViewHolder {
-
+  private static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+    TextView textView;
     DefinitionViewHolder(View v) {
       super(v);
+      textView = (TextView) v.findViewById(R.id.text_view);
     }
 
     void bind(String def) {
       textView.setText(def);
-    }
-  }
-
-  private static abstract class TextViewHolder extends RecyclerView.ViewHolder {
-
-    TextView textView;
-
-    TextViewHolder(View v) {
-      super(v);
-      textView = (TextView) v.findViewById(R.id.text_view);
     }
   }
 }

@@ -54,10 +54,6 @@ public class WordInfo {
     this.soundAm = soundAm;
   }
 
-  public String getPronunciation() {
-    return pronEn + "\n" + pronAm;
-  }
-
   public List<String> getDefinitions() {
     return definitions;
   }
@@ -68,10 +64,6 @@ public class WordInfo {
 
   public void addDefinition(String definition) {
     this.definitions.add(definition);
-  }
-
-  public void setDefinitions(List<String> definitions) {
-    this.definitions = definitions;
   }
 
   public static WordInfo from(Definition definition) {

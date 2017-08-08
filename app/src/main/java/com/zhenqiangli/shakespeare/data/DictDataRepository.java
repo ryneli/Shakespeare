@@ -3,12 +3,10 @@ package com.zhenqiangli.shakespeare.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
 import com.zhenqiangli.shakespeare.data.model.DictDatabaseSchema.Words;
 import com.zhenqiangli.shakespeare.data.model.DictDatabaseSchema.Words.Cols;
 import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
-import com.zhenqiangli.shakespeare.util.FileDownloader;
 
 /**
  * Created by zhenqiangli on 8/7/17.
@@ -37,36 +35,20 @@ public class DictDataRepository {
   }
 
   private void insert(WordInfo wordInfo, GetDefinitionCallback callback) {
-    new AsyncTask<Void, Void, Void>() {
-      String enPath;
-      String amPath;
-      @Override
-      protected Void doInBackground(Void... params) {
-        enPath = FileDownloader.get(context).downloadFile(wordInfo.getSoundEn());
-        amPath = FileDownloader.get(context).downloadFile(wordInfo.getSoundAm());
-        return null;
+      String defs = "";
+      for (String def : wordInfo.getDefinitions()) {
+        defs += def + "\n";
       }
+      ContentValues cv = new ContentValues();
+      cv.put(Cols.KEYWORD, wordInfo.getKeyword());
+      cv.put(Cols.PRON_EN, wordInfo.getPronEn());
+      cv.put(Cols.PRON_AM, wordInfo.getPronAm());
+      cv.put(Cols.SOUND_EN, wordInfo.getSoundEn());
+      cv.put(Cols.SOUND_AM, wordInfo.getSoundAm());
+      cv.put(Cols.DEFINITION, defs);
 
-      @Override
-      protected void onPostExecute(Void aVoid) {
-        wordInfo.setSoundAm(amPath);
-        wordInfo.setSoundEn(enPath);
-        String defs = "";
-        for (String def : wordInfo.getDefinitions()) {
-          defs += def + "\n";
-        }
-        ContentValues cv = new ContentValues();
-        cv.put(Cols.KEYWORD, wordInfo.getKeyword());
-        cv.put(Cols.PRON_EN, wordInfo.getPronEn());
-        cv.put(Cols.PRON_AM, wordInfo.getPronAm());
-        cv.put(Cols.SOUND_EN, wordInfo.getSoundEn());
-        cv.put(Cols.SOUND_AM, wordInfo.getSoundAm());
-        cv.put(Cols.DEFINITION, defs);
-
-        database.insert(Words.NAME, null, cv);
-        callback.run(() -> wordInfo);
-      }
-    }.execute();
+      database.insert(Words.NAME, null, cv);
+      callback.run(() -> wordInfo);
   }
 
   public interface GetDefinitionResult {

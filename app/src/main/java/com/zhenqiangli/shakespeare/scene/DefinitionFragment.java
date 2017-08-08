@@ -3,6 +3,7 @@ package com.zhenqiangli.shakespeare.scene;
 import static com.android.volley.VolleyLog.TAG;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
+import com.zhenqiangli.shakespeare.ShakespeareApp;
 import com.zhenqiangli.shakespeare.data.DictDataRepository;
 import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
+import java.util.concurrent.Executor;
 
 /**
  * Definition Fragment.
@@ -28,6 +31,7 @@ public class DefinitionFragment extends DialogFragment {
   private static final String ARGUMENT_WORD = "word";
   private RecyclerView definitionsView;
   private String word;
+  private Executor backgroundExecutor;
 
   public static DefinitionFragment newInstance(String word) {
     DefinitionFragment fragment = new DefinitionFragment();
@@ -45,6 +49,7 @@ public class DefinitionFragment extends DialogFragment {
     View v = inflater.inflate(R.layout.fragment_word_definition, container, false);
     definitionsView = (RecyclerView) v.findViewById(R.id.word_definition);
     definitionsView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    backgroundExecutor = ((ShakespeareApp)getActivity().getApplication()).getBackgroundExecutor();
     return v;
   }
 
@@ -56,7 +61,7 @@ public class DefinitionFragment extends DialogFragment {
             new DefinitionsAdapter(getActivity(), result.getWordInfo())));
   }
 
-  private static class DefinitionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+  private class DefinitionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private WordInfo wordInfo;
@@ -133,7 +138,7 @@ public class DefinitionFragment extends DialogFragment {
     }
   }
 
-  private static class PronunciationViewHolder extends RecyclerView.ViewHolder {
+  private class PronunciationViewHolder extends RecyclerView.ViewHolder {
     TextView enTextView;
     TextView amTextView;
     ImageView enImageView;
@@ -147,29 +152,25 @@ public class DefinitionFragment extends DialogFragment {
       amImageView = (ImageView) v.findViewById(R.id.iv_am);
     }
 
+    private void playSound(String url) {
+      MediaPlayer mp = new MediaPlayer();
+      try {
+        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp.setDataSource(url);
+        mp.prepare();
+        mp.start();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
     void bind(WordInfo wordInfo) {
       enTextView.setText(wordInfo.getPronEn());
       amTextView.setText(wordInfo.getPronAm());
-      enImageView.setOnClickListener(v -> {
-        MediaPlayer mp = new MediaPlayer();
-        try {
-          mp.setDataSource(wordInfo.getSoundEn());
-          mp.prepare();
-          mp.start();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      });
-      amImageView.setOnClickListener(v -> {
-        MediaPlayer mp = new MediaPlayer();
-        try {
-          mp.setDataSource(wordInfo.getSoundAm());
-          mp.prepare();
-          mp.start();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      });
+      enImageView.setOnClickListener(
+          v -> backgroundExecutor.execute(() -> playSound(wordInfo.getSoundEn())));
+      amImageView.setOnClickListener(
+          v -> backgroundExecutor.execute(() -> playSound(wordInfo.getSoundAm())));
     }
   }
 

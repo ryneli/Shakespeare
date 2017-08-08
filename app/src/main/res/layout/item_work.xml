@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/book_item_height"
     android:layout_margin="@dimen/book_item_margin">
@@ -16,7 +15,7 @@
       style="@style/Text.Title"
       android:layout_width="match_parent"
       android:layout_height="40dp"
-      android:layout_toRightOf="@id/book_icon"
+      android:layout_toEndOf="@id/book_icon"
       android:layout_alignParentTop="true"
       android:text="book name"/>
   <TextView
@@ -24,7 +23,7 @@
       android:id="@+id/book_detail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_toRightOf="@id/book_icon"
+      android:layout_toEndOf="@id/book_icon"
       android:layout_alignBottom="@id/book_name"
       android:layout_alignParentBottom="true"
       android:text="detail"/>

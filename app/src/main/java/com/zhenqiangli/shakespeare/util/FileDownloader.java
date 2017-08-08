@@ -4,7 +4,6 @@ import static com.android.volley.VolleyLog.TAG;
 
 import android.content.Context;
 import android.util.Log;
-import com.zhenqiangli.shakespeare.ShakespeareApp;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +11,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.concurrent.Executor;
 
 /**
  * From https://stackoverflow.com/questions/7441140/how-to-play-audio-file-from-server-in-android
@@ -22,13 +20,11 @@ public class FileDownloader {
   private static FileDownloader INSTANCE;
   Context context;
   String basepath;
-  Executor backgroundExecutor;
 
   private FileDownloader(Context context) {
     this.context = context.getApplicationContext();
     this.basepath = context.getApplicationInfo().dataDir + "/download";
     createFolderIfNotExist(basepath);
-    backgroundExecutor = ((ShakespeareApp) context.getApplicationContext()).getBackgroundExecutor();
   }
 
   private void createFolderIfNotExist(String path) {
@@ -50,15 +46,11 @@ public class FileDownloader {
     return INSTANCE;
   }
 
-  public interface DownloadFileCallback {
-    void onResult(String path);
-  }
-
-  public void downloadFile(String url, DownloadFileCallback callback) {
-    backgroundExecutor.execute(() -> {
-      String path = download(url);
-      callback.onResult(path);
-    });
+  public String downloadFile(String url) {
+    if (url == null) {
+      return "";
+    }
+    return download(url);
   }
 
   private String download(String urlString) {

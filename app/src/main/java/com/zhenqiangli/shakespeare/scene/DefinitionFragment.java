@@ -3,6 +3,7 @@ package com.zhenqiangli.shakespeare.scene;
 import static com.android.volley.VolleyLog.TAG;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DictDataRepository;
@@ -134,16 +136,40 @@ public class DefinitionFragment extends DialogFragment {
   private static class PronunciationViewHolder extends RecyclerView.ViewHolder {
     TextView enTextView;
     TextView amTextView;
+    ImageView enImageView;
+    ImageView amImageView;
 
     PronunciationViewHolder(View v) {
       super(v);
       enTextView = (TextView) v.findViewById(R.id.tv_en);
       amTextView = (TextView) v.findViewById(R.id.tv_am);
+      enImageView = (ImageView) v.findViewById(R.id.iv_en);
+      amImageView = (ImageView) v.findViewById(R.id.iv_am);
     }
 
     void bind(WordInfo wordInfo) {
       enTextView.setText(wordInfo.getPronEn());
       amTextView.setText(wordInfo.getPronAm());
+      enImageView.setOnClickListener(v -> {
+        MediaPlayer mp = new MediaPlayer();
+        try {
+          mp.setDataSource(wordInfo.getSoundEn());
+          mp.prepare();
+          mp.start();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      });
+      amImageView.setOnClickListener(v -> {
+        MediaPlayer mp = new MediaPlayer();
+        try {
+          mp.setDataSource(wordInfo.getSoundAm());
+          mp.prepare();
+          mp.start();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      });
     }
   }
 

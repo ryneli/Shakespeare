@@ -52,10 +52,18 @@ public class ChineseDefinitionRequester {
 
                     Elements sounds = document.select("i.new-speak-step");
                     if (sounds.size() > 0) {
-                        wordInfo.setSoundEn(sounds.get(0).text());
+                        String url = sounds.get(0).attr("ms-on-mouseover");
+                        // sound('http://res.iciba.com/resource/amp3/0/0/de/6e/de6e614d32f65d12b439d1081c91da17.mp3')
+                        // http://res.iciba.com/resource/amp3/0/0/de/6e/de6e614d32f65d12b439d1081c91da17.mp3
+                        url = url.substring(7, url.length()-2);
+                        Log.d(TAG, "doInBackground: sounds " + url);
+                        wordInfo.setSoundEn(url);
                     }
                     if (sounds.size() > 1) {
-                        wordInfo.setSoundAm(sounds.get(1).text());
+                        String url = sounds.get(1).attr("ms-on-mouseover");
+                        url = url.substring(7, url.length()-2);
+                        Log.d(TAG, "doInBackground: sounds " + url);
+                        wordInfo.setSoundAm(url);
                     }
 
                     Elements defs = document.getElementsByClass("prop");

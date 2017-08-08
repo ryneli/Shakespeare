@@ -1,12 +1,16 @@
 package com.zhenqiangli.shakespeare.data;
 
+import static com.android.volley.VolleyLog.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.zhenqiangli.shakespeare.data.dictionary.WordInfo;
 import com.zhenqiangli.shakespeare.data.model.DictDatabaseSchema.Words;
 import com.zhenqiangli.shakespeare.data.model.DictDatabaseSchema.Words.Cols;
 import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
+import com.zhenqiangli.shakespeare.util.FileDownloader;
 
 /**
  * Created by zhenqiangli on 8/7/17.
@@ -17,7 +21,7 @@ public class DictDataRepository {
   private Context context;
   private SQLiteDatabase database;
   private DictDataRepository(Context context) {
-    this.context = context;
+    this.context = context.getApplicationContext();
     database = new DictDatabaseHelper(context).getWritableDatabase();
   }
 
@@ -48,6 +52,8 @@ public class DictDataRepository {
       defs += def + "\n";
     }
     cv.put(Cols.DEFINITION, defs);
+    FileDownloader.get(context).downloadFile(wordInfo.getSoundEn(),
+        path -> Log.d(TAG, "insert: " + wordInfo.getKeyword() + " " + path));
     database.insert(Words.NAME, null, cv);
   }
 

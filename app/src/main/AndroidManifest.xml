@@ -8,6 +8,7 @@
         android:icon="@drawable/shakespeare_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".ShakespeareApp"
         android:theme="@style/AppTheme">
         <activity android:name=".main.MainActivity"
             android:screenOrientation="portrait"

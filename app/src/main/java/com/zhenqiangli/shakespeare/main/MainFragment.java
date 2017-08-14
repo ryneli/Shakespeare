@@ -22,7 +22,8 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment implements MainContract.View {
   private static final String TAG = "MainFragment";
   Presenter presenter;
-  ViewPager booListViewPager;
+  ViewPager bookListViewPager;
+  BookGenreViewPagerAdapter adapter;
 
   public static MainFragment newInstance() {
     return new MainFragment();
@@ -33,7 +34,9 @@ public class MainFragment extends Fragment implements MainContract.View {
   public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_main, container, false);
-    booListViewPager = (ViewPager) v.findViewById(R.id.book_list_view_pager);
+    bookListViewPager = (ViewPager) v.findViewById(R.id.book_list_view_pager);
+    adapter = new BookGenreViewPagerAdapter(getFragmentManager());
+    bookListViewPager.setAdapter(adapter);
     return v;
   }
 
@@ -50,10 +53,10 @@ public class MainFragment extends Fragment implements MainContract.View {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    booListViewPager.setAdapter(new BookGenreViewPagerAdapter(getFragmentManager()));
   }
 
   private class BookGenreViewPagerAdapter extends FragmentStatePagerAdapter {
+
     BookGenreViewPagerAdapter(FragmentManager fm) {
       super(fm);
     }
@@ -61,7 +64,8 @@ public class MainFragment extends Fragment implements MainContract.View {
     @Override
     public Fragment getItem(int position) {
       Log.d(TAG, "getItem: " + position);
-      BookGenreFragment fragment = BookGenreFragment.newInstance(new ArrayList<>(presenter.getDramaList(position)));
+      BookGenreFragment fragment = BookGenreFragment
+          .newInstance(new ArrayList<>(presenter.getDramaList(position)));
       fragment.setPresenter(presenter);
       return fragment;
     }

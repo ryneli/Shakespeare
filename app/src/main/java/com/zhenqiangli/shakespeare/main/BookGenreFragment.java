@@ -32,7 +32,6 @@ public class BookGenreFragment extends Fragment {
   RecyclerView worksView;
   WorksAdapter adapter;
   ArrayList<DramaSummary> dramaSummaries;
-  int position;
   RecyclerItemClickListener recyclerItemClickListener;
 
   public static BookGenreFragment newInstance(ArrayList<DramaSummary> dramaSummaryList) {
@@ -62,7 +61,6 @@ public class BookGenreFragment extends Fragment {
     worksView.addItemDecoration(itemDecoration);
     adapter = new WorksAdapter(getActivity(), dramaSummaries);
     worksView.setAdapter(adapter);
-    position = args.getInt(ARGUMENT_DRAMA_SUMMARY_LIST);
     recyclerItemClickListener = new RecyclerItemClickListener(getActivity(), worksView, adapter);
     worksView.addOnItemTouchListener(recyclerItemClickListener);
     return view;

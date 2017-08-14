@@ -18,6 +18,7 @@ import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
 import com.zhenqiangli.shakespeare.util.TimeUtil;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,16 +28,17 @@ import java.util.List;
 public class BookGenreFragment extends Fragment {
 
   private static final String TAG = "BookGenreFragment";
-  private static final String ARGUMENT_DRAMA_SUMMARY_LIST = "drama_summary_list";
+  private static final String ARGUMENT_POSITION = "position";
   Presenter presenter;
   RecyclerView worksView;
   WorksAdapter adapter;
+  int position;
   ArrayList<DramaSummary> dramaSummaries;
   RecyclerItemClickListener recyclerItemClickListener;
 
-  public static BookGenreFragment newInstance(ArrayList<DramaSummary> dramaSummaryList) {
+  public static BookGenreFragment newInstance(int position) {
     Bundle args = new Bundle();
-    args.putParcelableArrayList(ARGUMENT_DRAMA_SUMMARY_LIST, dramaSummaryList);
+    args.putInt(ARGUMENT_POSITION, position);
     BookGenreFragment fragment = new BookGenreFragment();
     fragment.setArguments(args);
     return fragment;
@@ -52,18 +54,24 @@ public class BookGenreFragment extends Fragment {
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_book_genre, container, false);
     Bundle args = getArguments();
-    dramaSummaries = args.getParcelableArrayList(ARGUMENT_DRAMA_SUMMARY_LIST);
+    position = args.getInt(ARGUMENT_POSITION);
     worksView = (RecyclerView) view.findViewById(R.id.book_list);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
     worksView.setLayoutManager(linearLayoutManager);
     DividerItemDecoration itemDecoration = new DividerItemDecoration(worksView.getContext(),
         linearLayoutManager.getOrientation());
     worksView.addItemDecoration(itemDecoration);
-    adapter = new WorksAdapter(getActivity(), dramaSummaries);
+    adapter = new WorksAdapter(getActivity());
     worksView.setAdapter(adapter);
     recyclerItemClickListener = new RecyclerItemClickListener(getActivity(), worksView, adapter);
     worksView.addOnItemTouchListener(recyclerItemClickListener);
     return view;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    adapter.setDramaSummaryList(presenter.getDramaList(position));
   }
 
   @Override
@@ -78,9 +86,15 @@ public class BookGenreFragment extends Fragment {
     List<DramaSummary> dramaSummaryList;
     Context context;
 
-    WorksAdapter(Context context, List<DramaSummary> dramaSummaryList) {
+    WorksAdapter(Context context) {
       this.context = context;
+      dramaSummaryList = new LinkedList<>();
+    }
+
+    public void setDramaSummaryList(
+        List<DramaSummary> dramaSummaryList) {
       this.dramaSummaryList = dramaSummaryList;
+      notifyDataSetChanged();
     }
 
     @Override

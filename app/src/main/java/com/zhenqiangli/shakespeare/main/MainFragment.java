@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.scene.SceneActivity;
-import java.util.ArrayList;
 
 /**
  * Created by zhenqiangli on 8/14/17.
@@ -65,7 +64,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     public Fragment getItem(int position) {
       Log.d(TAG, "getItem: " + position);
       BookGenreFragment fragment = BookGenreFragment
-          .newInstance(new ArrayList<>(presenter.getDramaList(position)));
+          .newInstance(position);
       fragment.setPresenter(presenter);
       return fragment;
     }

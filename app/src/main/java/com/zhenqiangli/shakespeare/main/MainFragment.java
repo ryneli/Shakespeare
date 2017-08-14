@@ -2,6 +2,7 @@ package com.zhenqiangli.shakespeare.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -36,6 +37,9 @@ public class MainFragment extends Fragment implements MainContract.View {
     bookListViewPager = (ViewPager) v.findViewById(R.id.book_list_view_pager);
     adapter = new BookGenreViewPagerAdapter(getFragmentManager());
     bookListViewPager.setAdapter(adapter);
+
+    TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
+    tabLayout.setupWithViewPager(bookListViewPager);
     return v;
   }
 

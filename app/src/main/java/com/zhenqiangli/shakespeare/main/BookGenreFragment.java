@@ -39,7 +39,7 @@ public class BookGenreFragment extends Fragment implements MainContract.View {
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_main, container, false);
+    View view = inflater.inflate(R.layout.fragment_book_genre, container, false);
     worksView = (RecyclerView) view.findViewById(R.id.book_list);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
     worksView.setLayoutManager(linearLayoutManager);

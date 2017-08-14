@@ -102,7 +102,7 @@ public class DataRepository {
     String sql = "select " + TextUtils.join(", ", DRAMA_SUMMARY_COLUMNS)
         + " from " + Works.NAME;
     if (genre != null) {
-      sql += " where " + genre;
+      sql += " where genre=\'" + genre + "\' ";
     }
     sql += " order by " + Works.Cols.LAST_ACCESS + " desc";
     Cursor cursor = database.rawQuery(sql, null);
@@ -118,10 +118,6 @@ public class DataRepository {
     }
     cursor.close();
     return res;
-  }
-
-  public List<DramaSummary> getDramaSummaryList() {
-    return getDramaSummaryList(null);
   }
 
   public void updateDramaAccessTime(int workId) {
@@ -143,6 +139,7 @@ public class DataRepository {
     while (cursor.moveToNext()) {
       res.add(cursor.getString(0));
     }
+    cursor.close();
     return res;
   }
 }

@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface MainContract {
   interface View extends BaseView<Presenter> {
-    void showDramaList(List<DramaSummary> dramaSummaryList);
     void showDrama(int workIndex, int sceneIndex);
   }
   interface Presenter extends BasePresenter {
-    void openDramaList();
     void openDrama(int workIndex, int sceneIndex);
+    int getGenreSize();
+    List<DramaSummary> getDramaList(int position);
   }
 }

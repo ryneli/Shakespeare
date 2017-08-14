@@ -8,7 +8,7 @@ import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    BookGenreFragment fragment;
+    MainFragment fragment;
     Presenter presenter;
 
     @Override
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (fragment == null) {
-            fragment = BookGenreFragment.newInstance();
+            fragment = MainFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
                 .add(R.id.book_list_container, fragment)
                 .commit();

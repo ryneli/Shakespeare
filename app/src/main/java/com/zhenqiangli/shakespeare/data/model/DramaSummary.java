@@ -1,10 +1,13 @@
 package com.zhenqiangli.shakespeare.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zhenqiangli on 8/2/17.
  */
 
-public class DramaSummary {
+public class DramaSummary implements Parcelable {
   String title;
   String subtitle;
   int year;
@@ -67,5 +70,20 @@ public class DramaSummary {
 
   public void setWorkId(int workId) {
     this.workId = workId;
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(title);
+    dest.writeString(subtitle);
+    dest.writeInt(year);
+    dest.writeString(genre);
+    dest.writeInt(lastAccess);
+    dest.writeInt(workId);
   }
 }

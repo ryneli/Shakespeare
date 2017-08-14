@@ -1,7 +1,9 @@
 package com.zhenqiangli.shakespeare.main;
 
 import com.zhenqiangli.shakespeare.data.DataRepository;
+import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.View;
+import java.util.List;
 
 /**
  * Created by zhenqiangli on 7/26/17.
@@ -10,11 +12,6 @@ import com.zhenqiangli.shakespeare.main.MainContract.View;
 public class MainPresenter implements MainContract.Presenter {
   DataRepository dataRepository;
   View view;
-
-  @Override
-  public void openDramaList() {
-    view.showDramaList(dataRepository.getDramaSummaryList());
-  }
 
   @Override
   public void openDrama(int workIndex, int sceneIndex) {
@@ -28,6 +25,15 @@ public class MainPresenter implements MainContract.Presenter {
 
   @Override
   public void start() {
-    openDramaList();
+  }
+
+  @Override
+  public int getGenreSize() {
+    return dataRepository.getGenreList().size();
+  }
+
+  @Override
+  public List<DramaSummary> getDramaList(int position) {
+    return dataRepository.getDramaSummaryList(dataRepository.getGenreList().get(position));
   }
 }

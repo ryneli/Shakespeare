@@ -73,5 +73,10 @@ public class MainFragment extends Fragment implements MainContract.View {
     public int getCount() {
       return presenter.getGenreSize();
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return presenter.getGenreName(position);
+    }
   }
 }

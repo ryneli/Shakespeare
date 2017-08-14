@@ -33,6 +33,11 @@ public class MainPresenter implements MainContract.Presenter {
   }
 
   @Override
+  public String getGenreName(int position) {
+    return dataRepository.getGenreList().get(position);
+  }
+
+  @Override
   public List<DramaSummary> getDramaList(int position) {
     return dataRepository.getDramaSummaryList(dataRepository.getGenreList().get(position));
   }

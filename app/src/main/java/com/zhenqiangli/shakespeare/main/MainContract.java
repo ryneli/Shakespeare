@@ -16,6 +16,7 @@ public interface MainContract {
   interface Presenter extends BasePresenter {
     void openDrama(int workIndex, int sceneIndex);
     int getGenreSize();
+    String getGenreName(int position);
     List<DramaSummary> getDramaList(int position);
   }
 }

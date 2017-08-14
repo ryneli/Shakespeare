@@ -25,14 +25,14 @@ import java.util.List;
  * View for MainActivity
  */
 
-public class MainFragment extends Fragment implements MainContract.View {
-  private static final String TAG = "MainFragment";
+public class BookGenreFragment extends Fragment implements MainContract.View {
+  private static final String TAG = "BookGenreFragment";
   Presenter presenter;
   RecyclerView worksView;
   WorksAdapter adapter;
 
-  public static MainFragment newInstance() {
-    return new MainFragment();
+  public static BookGenreFragment newInstance() {
+    return new BookGenreFragment();
   }
 
   @Nullable

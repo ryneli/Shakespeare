@@ -23,10 +23,12 @@ import java.util.Map;
  */
 
 public class DataRepository {
+
   SQLiteDatabase database;
   private Map<Integer, Drama> dramas = new HashMap<>();
   private static final String TAG = "DataRepository";
   private static DataRepository INSTANCE;
+
   private DataRepository(Context context) {
     database = new DatabaseHelper(context).getWritableDatabase();
   }
@@ -72,14 +74,14 @@ public class DataRepository {
     if (!dramas.containsKey(i)) {
     /* select  */
       String sql = "select " + TextUtils.join(", ", SELECT_COLUMNS)
-              + " from paragraphs "
-              + " join chapters on chapters.id = paragraphs.chapter_id "
-              + " join characters on characters.id = paragraphs.character_id "
-              + " where chapters.work_id = ?;";
+          + " from paragraphs "
+          + " join chapters on chapters.id = paragraphs.chapter_id "
+          + " join characters on characters.id = paragraphs.character_id "
+          + " where chapters.work_id = ?;";
       String[] args = {String.valueOf(i)};
       Cursor cursor = database.rawQuery(
-              sql,
-              args
+          sql,
+          args
       );
       dramas.put(i, dramaFrom(cursor, i));
       cursor.close();
@@ -87,7 +89,7 @@ public class DataRepository {
     return dramas.get(i);
   }
 
-  private static final String[]  DRAMA_SUMMARY_COLUMNS = {
+  private static final String[] DRAMA_SUMMARY_COLUMNS = {
       Works.Cols.TITLE,
       Works.Cols.LONG_TITLE,
       Works.Cols.YEAR,
@@ -96,9 +98,13 @@ public class DataRepository {
       Works.Cols.ID,
   };
 
-  public List<DramaSummary> getDramaSummaryList() {
+  public List<DramaSummary> getDramaSummaryList(String genre) {
     String sql = "select " + TextUtils.join(", ", DRAMA_SUMMARY_COLUMNS)
-        + " from " + Works.NAME + " order by " + Works.Cols.LAST_ACCESS + " desc";
+        + " from " + Works.NAME;
+    if (genre != null) {
+      sql += " where " + genre;
+    }
+    sql += " order by " + Works.Cols.LAST_ACCESS + " desc";
     Cursor cursor = database.rawQuery(sql, null);
     List<DramaSummary> res = new LinkedList<>();
     while (cursor.moveToNext()) {
@@ -114,14 +120,29 @@ public class DataRepository {
     return res;
   }
 
+  public List<DramaSummary> getDramaSummaryList() {
+    return getDramaSummaryList(null);
+  }
+
   public void updateDramaAccessTime(int workId) {
     ContentValues contentValues = new ContentValues();
     contentValues.put(Works.Cols.LAST_ACCESS, TimeUtil.now());
     database.update(
-            Works.NAME,
-            contentValues,
-            Works.Cols.ID + " = " + workId,
-            null
+        Works.NAME,
+        contentValues,
+        Works.Cols.ID + " = " + workId,
+        null
     );
+  }
+
+  public List<String> getGenreList() {
+    String sql =
+        "select " + Works.Cols.GENRE + " from " + Works.NAME + " group by " + Works.Cols.GENRE;
+    Cursor cursor = database.rawQuery(sql, null);
+    List<String> res = new LinkedList<>();
+    while (cursor.moveToNext()) {
+      res.add(cursor.getString(0));
+    }
+    return res;
   }
 }

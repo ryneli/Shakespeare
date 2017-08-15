@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
+import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Chapters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Characters;
 import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Paragraphs;
@@ -13,6 +16,8 @@ import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.util.TimeUtil;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +33,10 @@ public class DataRepository {
   private Map<Integer, Drama> dramas = new HashMap<>();
   private static final String TAG = "DataRepository";
   private static DataRepository INSTANCE;
+  private Context context;
 
   private DataRepository(Context context) {
+    this.context = context;
     database = new DatabaseHelper(context).getWritableDatabase();
   }
 
@@ -140,6 +147,19 @@ public class DataRepository {
       res.add(cursor.getString(0));
     }
     cursor.close();
+    return res;
+  }
+
+  public Drawable getBookCover(int workId) {
+    String filepath = "covers/" + String.valueOf(workId) + ".jpg";
+    Log.d(TAG, "getBookCover: " + filepath);
+    Drawable res = context.getDrawable(R.drawable.close_book);
+    try {
+      InputStream in = context.getAssets().open(filepath);
+      res = Drawable.createFromStream(in, null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     return res;
   }
 }

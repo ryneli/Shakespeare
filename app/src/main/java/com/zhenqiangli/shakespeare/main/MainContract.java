@@ -1,5 +1,6 @@
 package com.zhenqiangli.shakespeare.main;
 
+import android.graphics.drawable.Drawable;
 import com.zhenqiangli.shakespeare.BasePresenter;
 import com.zhenqiangli.shakespeare.BaseView;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
@@ -18,5 +19,6 @@ public interface MainContract {
     int getGenreSize();
     String getGenreName(int position);
     List<DramaSummary> getDramaList(int position);
+    Drawable getBookCover(int workId);
   }
 }

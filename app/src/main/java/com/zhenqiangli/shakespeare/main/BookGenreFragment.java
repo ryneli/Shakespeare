@@ -1,6 +1,7 @@
 package com.zhenqiangli.shakespeare.main;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
-import com.zhenqiangli.shakespeare.util.TimeUtil;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -123,23 +124,25 @@ public class BookGenreFragment extends Fragment {
   }
 
   private class WorkViewHolder extends RecyclerView.ViewHolder {
-
+    private ImageView bookCoverImageView;
     private TextView bookNameView;
     private TextView bookDetailView;
 
     WorkViewHolder(View v) {
       super(v);
+      bookCoverImageView = (ImageView) v.findViewById(R.id.book_icon);
       bookNameView = (TextView) v.findViewById(R.id.book_name);
       bookDetailView = (TextView) v.findViewById(R.id.book_detail);
     }
 
     void bind(DramaSummary dramaSummary) {
+      Drawable bookCover = presenter.getBookCover(dramaSummary.getWorkId());
+      if (bookCover != null) {
+        bookCoverImageView.setImageDrawable(bookCover);
+      }
       bookNameView.setText(dramaSummary.getTitle());
-      bookDetailView.setText(String.format("%s - %s (%s) %s",
-          dramaSummary.getSubtitle(),
-          dramaSummary.getGenre(),
-          dramaSummary.getYear(),
-          TimeUtil.getDate(dramaSummary.getLastAccess())));
+      bookDetailView.setText(String.format("%s",
+          dramaSummary.getYear()));
     }
   }
 }

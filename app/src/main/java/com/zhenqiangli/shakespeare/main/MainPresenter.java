@@ -1,5 +1,6 @@
 package com.zhenqiangli.shakespeare.main;
 
+import android.graphics.drawable.Drawable;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.View;
@@ -40,5 +41,10 @@ public class MainPresenter implements MainContract.Presenter {
   @Override
   public List<DramaSummary> getDramaList(int position) {
     return dataRepository.getDramaSummaryList(dataRepository.getGenreList().get(position));
+  }
+
+  @Override
+  public Drawable getBookCover(int workId) {
+    return dataRepository.getBookCover(workId);
   }
 }

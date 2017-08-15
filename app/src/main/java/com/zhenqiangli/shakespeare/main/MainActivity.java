@@ -1,12 +1,12 @@
 package com.zhenqiangli.shakespeare.main;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.zhenqiangli.shakespeare.BaseActivity;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     MainFragment fragment;
     Presenter presenter;

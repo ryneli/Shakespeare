@@ -17,6 +17,8 @@ public class BaseActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Totally transparent status bar
     // https://github.com/mikepenz/MaterialDrawer/issues/254
     setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
     getWindow().setStatusBarColor(Color.TRANSPARENT);

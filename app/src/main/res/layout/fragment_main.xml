@@ -27,6 +27,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/tabBackground"
         app:tabMode="scrollable"
         app:tabTextColor="@color/tabUnselected"
         app:tabSelectedTextColor="@color/tabSelected"/>

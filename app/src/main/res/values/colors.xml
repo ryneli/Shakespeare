@@ -7,4 +7,5 @@
     <color name="white"> #fff </color>
     <color name="tabUnselected">#8fff</color>
     <color name="tabSelected">#fff</color>
+    <color name="tabBackground">#4000</color>
 </resources>

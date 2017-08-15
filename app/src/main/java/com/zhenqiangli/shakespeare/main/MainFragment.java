@@ -58,11 +58,6 @@ public class MainFragment extends Fragment implements MainContract.View {
     startActivity(SceneActivity.newIntent(getActivity(), workIndex, sceneIndex));
   }
 
-  @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-  }
-
   private class BookGenreViewPagerAdapter extends FragmentStatePagerAdapter {
 
     BookGenreViewPagerAdapter(FragmentManager fm) {

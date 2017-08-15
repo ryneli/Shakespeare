@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,9 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
     tabLayout.setupWithViewPager(bookListViewPager);
+
+    Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
+    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     return v;
   }
 

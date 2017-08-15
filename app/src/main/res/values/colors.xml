@@ -5,4 +5,6 @@
     <color name="colorAccent">@color/white</color>
     <color name="red"> #f00 </color>
     <color name="white"> #fff </color>
+    <color name="tabUnselected">#8fff</color>
+    <color name="tabSelected">#fff</color>
 </resources>

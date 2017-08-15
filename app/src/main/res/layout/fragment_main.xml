@@ -30,7 +30,9 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="scrollable"/>
+        app:tabMode="scrollable"
+        app:tabTextColor="@color/tabUnselected"
+        app:tabSelectedTextColor="@color/tabSelected"/>
   </android.support.design.widget.AppBarLayout>
   <android.support.v4.view.ViewPager
       android:id="@+id/book_list_view_pager"

@@ -14,16 +14,6 @@ import android.view.WindowManager;
 
 public class BaseActivity extends AppCompatActivity {
 
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    // Totally transparent status bar
-    // https://github.com/mikepenz/MaterialDrawer/issues/254
-    setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
-    getWindow().setStatusBarColor(Color.TRANSPARENT);
-  }
-
   public static void setWindowFlag(Activity activity, final int bits, boolean on) {
     Window win = activity.getWindow();
     WindowManager.LayoutParams winParams = win.getAttributes();
@@ -33,5 +23,15 @@ public class BaseActivity extends AppCompatActivity {
       winParams.flags &= ~bits;
     }
     win.setAttributes(winParams);
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Totally transparent status bar
+    // https://github.com/mikepenz/MaterialDrawer/issues/254
+    setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
+    getWindow().setStatusBarColor(Color.TRANSPARENT);
   }
 }

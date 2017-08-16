@@ -29,13 +29,9 @@ import java.util.List;
  */
 
 public class SceneFragment extends Fragment implements SceneContract.View {
+
   private static final String TAG = "SceneFragment";
   private Callbacks callbacks;
-
-  public interface Callbacks {
-    void showDefinition(String word);
-  }
-
   private SceneViewAdapter adapter;
   private Presenter presenter;
 
@@ -85,7 +81,22 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     callbacks.showDefinition(word);
   }
 
+  public interface Callbacks {
+
+    void showDefinition(String word);
+  }
+
+  private static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+
+    BaseViewHolder(View v) {
+      super(v);
+    }
+
+    protected abstract void bind(String text);
+  }
+
   private class SceneViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+
     private static final int TYPE_SCENE_TITLE = 1;
     private static final int TYPE_CHARACTER_NAME = 2;
     private static final int TYPE_SENTENCE = 3;
@@ -102,7 +113,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       for (int i = 0; i < drama.getNumScenes(); i++) {
         Scene scene = drama.getScene(i);
         items.add(new Pair<>(TYPE_SCENE_TITLE,
-                String.format("Act %s, Scene %s", scene.getActIndex(), scene.getSceneIndex())));
+            String.format("Act %s, Scene %s", scene.getActIndex(), scene.getSceneIndex())));
         for (Paragraph p : scene.getParagraphs().values()) {
           items.add(new Pair<>(TYPE_CHARACTER_NAME, p.getCharactorName()));
           for (String l : p.getLines()) {
@@ -118,6 +129,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       this.sceneIndex = sceneIndex;
       notifyDataSetChanged();
     }
+
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       int layoutId = 0;
@@ -155,12 +167,15 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   }
 
   private class TextViewHolder extends BaseViewHolder {
+
     TextView contentView;
     String text = "";
+
     TextViewHolder(View v) {
       super(v);
       contentView = (TextView) v.findViewById(R.id.item);
     }
+
     @Override
     protected void bind(String text) {
       contentView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -177,7 +192,9 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   }
 
   private class ClickableWordSpan extends ClickableSpan {
+
     String word;
+
     public ClickableWordSpan(String word) {
       this.word = word;
     }
@@ -191,13 +208,5 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     public void updateDrawState(TextPaint ds) {
       ds.setUnderlineText(false);
     }
-  }
-
-  private static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-    BaseViewHolder(View v) {
-      super(v);
-    }
-
-    protected abstract void bind(String text);
   }
 }

@@ -49,7 +49,7 @@ public class DefinitionFragment extends DialogFragment {
     View v = inflater.inflate(R.layout.fragment_word_definition, container, false);
     definitionsView = (RecyclerView) v.findViewById(R.id.word_definition);
     definitionsView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    backgroundExecutor = ((ShakespeareApp)getActivity().getApplication()).getBackgroundExecutor();
+    backgroundExecutor = ((ShakespeareApp) getActivity().getApplication()).getBackgroundExecutor();
     return v;
   }
 
@@ -61,13 +61,42 @@ public class DefinitionFragment extends DialogFragment {
             new DefinitionsAdapter(getActivity(), result.getWordInfo())));
   }
 
+  private static class KeywordViewHolder extends RecyclerView.ViewHolder {
+
+    TextView textView;
+
+    KeywordViewHolder(View v) {
+      super(v);
+      textView = (TextView) v.findViewById(R.id.text_view);
+    }
+
+    void bind(String word) {
+      Log.d(TAG, "bind: KeywordViewHolder(" + word + ")");
+      textView.setText(word);
+    }
+  }
+
+  private static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+
+    TextView textView;
+
+    DefinitionViewHolder(View v) {
+      super(v);
+      textView = (TextView) v.findViewById(R.id.text_view);
+    }
+
+    void bind(String def) {
+      textView.setText(def);
+    }
+  }
+
   private class DefinitionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
-    private WordInfo wordInfo;
     private static final int TYPE_KEYWORD = 1;
     private static final int TYPE_PRONUNCIATION = 2;
     private static final int TYPE_DEFINITION = 3;
+    private Context context;
+    private WordInfo wordInfo;
 
     DefinitionsAdapter(Context context, WordInfo wordInfo) {
       super();
@@ -125,20 +154,8 @@ public class DefinitionFragment extends DialogFragment {
     }
   }
 
-  private static class KeywordViewHolder extends RecyclerView.ViewHolder {
-    TextView textView;
-    KeywordViewHolder(View v) {
-      super(v);
-      textView = (TextView) v.findViewById(R.id.text_view);
-    }
-
-    void bind(String word) {
-      Log.d(TAG, "bind: KeywordViewHolder(" + word + ")");
-      textView.setText(word);
-    }
-  }
-
   private class PronunciationViewHolder extends RecyclerView.ViewHolder {
+
     TextView enTextView;
     TextView amTextView;
     ImageView enImageView;
@@ -171,18 +188,6 @@ public class DefinitionFragment extends DialogFragment {
           v -> backgroundExecutor.execute(() -> playSound(wordInfo.getSoundEn())));
       amImageView.setOnClickListener(
           v -> backgroundExecutor.execute(() -> playSound(wordInfo.getSoundAm())));
-    }
-  }
-
-  private static class DefinitionViewHolder extends RecyclerView.ViewHolder {
-    TextView textView;
-    DefinitionViewHolder(View v) {
-      super(v);
-      textView = (TextView) v.findViewById(R.id.text_view);
-    }
-
-    void bind(String def) {
-      textView.setText(def);
     }
   }
 }

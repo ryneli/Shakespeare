@@ -5,5 +5,6 @@ package com.zhenqiangli.shakespeare;
  */
 
 public interface BaseView<T> {
+
   void setPresenter(T presenter);
 }

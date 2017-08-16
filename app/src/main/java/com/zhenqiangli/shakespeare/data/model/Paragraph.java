@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public class Paragraph {
+
   private String charactorName;
   private List<String> lines = new ArrayList<>();
 

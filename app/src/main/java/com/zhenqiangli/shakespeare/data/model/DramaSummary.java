@@ -8,6 +8,7 @@ import android.os.Parcelable;
  */
 
 public class DramaSummary implements Parcelable {
+
   String title;
   String subtitle;
   int year;
@@ -15,7 +16,8 @@ public class DramaSummary implements Parcelable {
   int lastAccess;
   int workId;
 
-  public DramaSummary(String title, String subtitle, int year, String genre, int lastAccess, int workId) {
+  public DramaSummary(String title, String subtitle, int year, String genre, int lastAccess,
+      int workId) {
     this.title = title;
     this.subtitle = subtitle;
     this.year = year;

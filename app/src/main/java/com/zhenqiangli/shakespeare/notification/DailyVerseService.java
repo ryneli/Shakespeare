@@ -16,7 +16,9 @@ import com.zhenqiangli.shakespeare.main.MainActivity;
  */
 
 public class DailyVerseService extends IntentService {
+
   private static final String TAG = "DailyVerseService";
+
   public DailyVerseService() {
     super(TAG);
   }
@@ -35,7 +37,8 @@ public class DailyVerseService extends IntentService {
             .setSmallIcon(R.drawable.shakespeare_icon)
             .setContentTitle("Shakespeare")
             .setContentText("Subtitle");
-    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    NotificationManager notificationManager = (NotificationManager) getSystemService(
+        NOTIFICATION_SERVICE);
     notificationManager.notify(notificationId, builder.build());
   }
 

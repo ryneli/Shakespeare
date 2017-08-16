@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
  */
 
 public class ChineseDramaRequester {
+
   private static int EN_BASE = 2;
   private static int CN_BASE = 35;
   private static String FORMAT = "http://en.eywedu.net/LMOYZLY/420k0020zw_%04d.htm";
@@ -38,10 +39,11 @@ public class ChineseDramaRequester {
       }
     }.execute();
   }
+
   public static void test() {
     for (int i = 0; i < 33; i++) {
-      get(EN_BASE+i);
-      get(CN_BASE+i);
+      get(EN_BASE + i);
+      get(CN_BASE + i);
     }
   }
 }

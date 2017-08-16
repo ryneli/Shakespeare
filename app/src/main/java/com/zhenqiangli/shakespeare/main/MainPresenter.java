@@ -11,17 +11,18 @@ import java.util.List;
  */
 
 public class MainPresenter implements MainContract.Presenter {
+
   DataRepository dataRepository;
   View view;
-
-  @Override
-  public void openDrama(int workIndex, int sceneIndex) {
-    view.showDrama(workIndex, sceneIndex);
-  }
 
   public MainPresenter(DataRepository dataRepository, View view) {
     this.dataRepository = dataRepository;
     this.view = view;
+  }
+
+  @Override
+  public void openDrama(int workIndex, int sceneIndex) {
+    view.showDrama(workIndex, sceneIndex);
   }
 
   @Override

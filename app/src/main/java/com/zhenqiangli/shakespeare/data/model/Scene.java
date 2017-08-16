@@ -8,15 +8,16 @@ import java.util.TreeMap;
  */
 
 public class Scene {
+
   private int actIndex;
   private int sceneIndex;
+  // Need sorted map here
+  private Map<Integer, Paragraph> paragraphs = new TreeMap<>();
+
   public Scene(int actIndex, int sceneIndex) {
     this.actIndex = actIndex;
     this.sceneIndex = sceneIndex;
   }
-
-  // Need sorted map here
-  private Map<Integer, Paragraph> paragraphs = new TreeMap<>();
 
   public Map<Integer, Paragraph> getParagraphs() {
     return paragraphs;

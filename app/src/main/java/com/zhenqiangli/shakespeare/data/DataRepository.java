@@ -30,10 +30,25 @@ import java.util.Map;
 
 public class DataRepository {
 
+  private static final String TAG = "DataRepository";
+  private static final String[] SELECT_COLUMNS = {
+      Chapters.NAME + "." + Chapters.Cols.ACT,
+      Chapters.NAME + "." + Chapters.Cols.SCENE,
+      Paragraphs.NAME + "." + Paragraphs.Cols.PLAIN_TEXT,
+      Characters.NAME + "." + Characters.Cols.NAME,
+      Paragraphs.NAME + "." + Cols.PARAGRAPH_NUM,
+  };
+  private static final String[] DRAMA_SUMMARY_COLUMNS = {
+      Works.Cols.TITLE,
+      Works.Cols.LONG_TITLE,
+      Works.Cols.YEAR,
+      Works.Cols.GENRE,
+      Works.Cols.LAST_ACCESS,
+      Works.Cols.ID,
+  };
+  private static DataRepository INSTANCE;
   SQLiteDatabase database;
   private Map<Integer, Drama> dramas = new HashMap<>();
-  private static final String TAG = "DataRepository";
-  private static DataRepository INSTANCE;
   private Context context;
 
   private DataRepository(Context context) {
@@ -47,14 +62,6 @@ public class DataRepository {
     }
     return INSTANCE;
   }
-
-  private static final String[] SELECT_COLUMNS = {
-      Chapters.NAME + "." + Chapters.Cols.ACT,
-      Chapters.NAME + "." + Chapters.Cols.SCENE,
-      Paragraphs.NAME + "." + Paragraphs.Cols.PLAIN_TEXT,
-      Characters.NAME + "." + Characters.Cols.NAME,
-      Paragraphs.NAME + "." + Cols.PARAGRAPH_NUM,
-  };
 
   private void putCursorRowToDrama(Cursor cursor, Drama drama) {
     int act;
@@ -96,15 +103,6 @@ public class DataRepository {
     }
     return dramas.get(i);
   }
-
-  private static final String[] DRAMA_SUMMARY_COLUMNS = {
-      Works.Cols.TITLE,
-      Works.Cols.LONG_TITLE,
-      Works.Cols.YEAR,
-      Works.Cols.GENRE,
-      Works.Cols.LAST_ACCESS,
-      Works.Cols.ID,
-  };
 
   public List<DramaSummary> getDramaSummaryList(String genre) {
     String sql = "select " + TextUtils.join(", ", DRAMA_SUMMARY_COLUMNS)

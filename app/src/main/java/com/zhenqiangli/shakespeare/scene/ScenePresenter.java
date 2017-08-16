@@ -9,9 +9,11 @@ import com.zhenqiangli.shakespeare.scene.SceneContract.View;
  */
 
 public class ScenePresenter implements Presenter {
+
   private View view;
   private DataRepository dataRepository;
   private int workIndex;
+
   public ScenePresenter(DataRepository dataRepository, View view, int workIndex) {
     this.view = view;
     this.dataRepository = dataRepository;

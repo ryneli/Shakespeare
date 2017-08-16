@@ -11,26 +11,29 @@ import com.zhenqiangli.shakespeare.data.model.DictDatabaseSchema.Words.Cols;
  */
 
 public class DictDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "dictionary.sqlite";
-    private static final int DATABASE_VERSION = 1;
-    private static final String SQL_CREATE_TABLE =
-        "create table " + Words.NAME + " (" +
-            Cols.KEYWORD + " TEXT primary key, " +
-            Cols.PRON_EN + " TEXT, " +
-            Cols.PRON_AM + " TEXT, " +
-            Cols.SOUND_EN + " TEXT, " +
-            Cols.SOUND_AM + " TEXT, " +
-            Cols.DEFINITION + " TEXT)";
-    public DictDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE);
-    }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+  private static final String DATABASE_NAME = "dictionary.sqlite";
+  private static final int DATABASE_VERSION = 1;
+  private static final String SQL_CREATE_TABLE =
+      "create table " + Words.NAME + " (" +
+          Cols.KEYWORD + " TEXT primary key, " +
+          Cols.PRON_EN + " TEXT, " +
+          Cols.PRON_AM + " TEXT, " +
+          Cols.SOUND_EN + " TEXT, " +
+          Cols.SOUND_AM + " TEXT, " +
+          Cols.DEFINITION + " TEXT)";
 
-    }
+  public DictDatabaseHelper(Context context) {
+    super(context, DATABASE_NAME, null, DATABASE_VERSION);
+  }
+
+  @Override
+  public void onCreate(SQLiteDatabase db) {
+    db.execSQL(SQL_CREATE_TABLE);
+  }
+
+  @Override
+  public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+  }
 }

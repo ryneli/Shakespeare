@@ -18,9 +18,9 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/toolbar_top_margin"
+          app:navigationIcon="@drawable/navigation_icon"
           app:title="@string/app_name"
-          app:titleTextAppearance="@style/ToolbarText"
-          app:navigationIcon="@drawable/navigation_icon"/>
+          app:titleTextAppearance="@style/ToolbarText"/>
       <FrameLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -31,13 +31,13 @@
           android:layout_height="wrap_content"
           android:background="@color/tabBackground"
           app:tabMode="scrollable"
-          app:tabTextColor="@color/tabUnselected"
-          app:tabSelectedTextColor="@color/tabSelected"/>
+          app:tabSelectedTextColor="@color/tabSelected"
+          app:tabTextColor="@color/tabUnselected"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/book_list_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
   </LinearLayout>
 
   <android.support.design.widget.NavigationView

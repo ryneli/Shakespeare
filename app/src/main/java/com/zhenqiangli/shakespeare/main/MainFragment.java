@@ -1,7 +1,5 @@
 package com.zhenqiangli.shakespeare.main;
 
-import static com.zhenqiangli.shakespeare.R.id.toolbar;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +30,7 @@ import com.zhenqiangli.shakespeare.util.Others;
 
 public class MainFragment extends Fragment implements MainContract.View,
     OnNavigationItemSelectedListener {
+
   private static final String TAG = "MainFragment";
   Presenter presenter;
   ViewPager bookListViewPager;
@@ -80,32 +79,6 @@ public class MainFragment extends Fragment implements MainContract.View,
     return false;
   }
 
-  private class BookGenreViewPagerAdapter extends FragmentStatePagerAdapter {
-
-    BookGenreViewPagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-      Log.d(TAG, "getItem: " + position);
-      BookGenreFragment fragment = BookGenreFragment
-          .newInstance(position);
-      fragment.setPresenter(presenter);
-      return fragment;
-    }
-
-    @Override
-    public int getCount() {
-      return presenter.getGenreSize();
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-      return presenter.getGenreName(position);
-    }
-  }
-
   private void initDrawerMenu(View root) {
     Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -140,5 +113,31 @@ public class MainFragment extends Fragment implements MainContract.View,
 
       }
     });
+  }
+
+  private class BookGenreViewPagerAdapter extends FragmentStatePagerAdapter {
+
+    BookGenreViewPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      Log.d(TAG, "getItem: " + position);
+      BookGenreFragment fragment = BookGenreFragment
+          .newInstance(position);
+      fragment.setPresenter(presenter);
+      return fragment;
+    }
+
+    @Override
+    public int getCount() {
+      return presenter.getGenreSize();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return presenter.getGenreName(position);
+    }
   }
 }

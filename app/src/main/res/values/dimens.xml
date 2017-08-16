@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="book_item_height">160dp</dimen>
-    <dimen name="book_item_margin">16dp</dimen>
-    <dimen name="dialog_height"> 64dp </dimen>
-    <dimen name="toolbar_title_size"> 20sp </dimen>
-    <dimen name="toolbar_top_margin"> 24dp </dimen>
-    <dimen name="icon_voice_height"> 16dp </dimen>
-    <dimen name="book_cover_width"> 160dp </dimen>
-    <dimen name="book_cover_height"> 240dp </dimen>
-    <dimen name="scene_padding_start_end"> 8dp </dimen>
+  <dimen name="book_item_height">160dp</dimen>
+  <dimen name="book_item_margin">16dp</dimen>
+  <dimen name="dialog_height">64dp</dimen>
+  <dimen name="toolbar_title_size">20sp</dimen>
+  <dimen name="toolbar_top_margin">24dp</dimen>
+  <dimen name="icon_voice_height">16dp</dimen>
+  <dimen name="book_cover_width">160dp</dimen>
+  <dimen name="book_cover_height">240dp</dimen>
+  <dimen name="scene_padding_start_end">8dp</dimen>
 </resources>

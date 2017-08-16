@@ -15,6 +15,7 @@ import com.zhenqiangli.shakespeare.data.DataRepository;
  */
 
 public class SceneActivity extends AppCompatActivity implements SceneFragment.Callbacks {
+
   private static final String TAG = "SceneActivity";
   private static final String EXTRA_WORK = "work";
   private static final String EXTRA_SCENE = "scene";

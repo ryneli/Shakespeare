@@ -124,6 +124,7 @@ public class BookGenreFragment extends Fragment {
   }
 
   private class WorkViewHolder extends RecyclerView.ViewHolder {
+
     private ImageView bookCoverImageView;
     private TextView bookNameView;
     private TextView bookDetailView;

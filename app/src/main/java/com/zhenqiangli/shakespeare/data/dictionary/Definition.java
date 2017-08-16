@@ -1,82 +1,115 @@
-
 package com.zhenqiangli.shakespeare.data.dictionary;
 
 import java.util.ArrayList;
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-public class Definition
-{
-    private ArrayList<Object> textProns;
+public class Definition {
 
-    public ArrayList<Object> getTextProns() { return this.textProns; }
+  private ArrayList<Object> textProns;
+  private String sourceDictionary;
+  private ArrayList<Object> exampleUses;
+  private ArrayList<Object> relatedWords;
+  private ArrayList<Object> labels;
+  private ArrayList<Object> citations;
+  private String word;
+  private String partOfSpeech;
+  private String attributionText;
+  private String sequence;
+  private String text;
+  private double score;
 
-    public void setTextProns(ArrayList<Object> textProns) { this.textProns = textProns; }
+  public ArrayList<Object> getTextProns() {
+    return this.textProns;
+  }
 
-    private String sourceDictionary;
+  public void setTextProns(ArrayList<Object> textProns) {
+    this.textProns = textProns;
+  }
 
-    public String getSourceDictionary() { return this.sourceDictionary; }
+  public String getSourceDictionary() {
+    return this.sourceDictionary;
+  }
 
-    public void setSourceDictionary(String sourceDictionary) { this.sourceDictionary = sourceDictionary; }
+  public void setSourceDictionary(String sourceDictionary) {
+    this.sourceDictionary = sourceDictionary;
+  }
 
-    private ArrayList<Object> exampleUses;
+  public ArrayList<Object> getExampleUses() {
+    return this.exampleUses;
+  }
 
-    public ArrayList<Object> getExampleUses() { return this.exampleUses; }
+  public void setExampleUses(ArrayList<Object> exampleUses) {
+    this.exampleUses = exampleUses;
+  }
 
-    public void setExampleUses(ArrayList<Object> exampleUses) { this.exampleUses = exampleUses; }
+  public ArrayList<Object> getRelatedWords() {
+    return this.relatedWords;
+  }
 
-    private ArrayList<Object> relatedWords;
+  public void setRelatedWords(ArrayList<Object> relatedWords) {
+    this.relatedWords = relatedWords;
+  }
 
-    public ArrayList<Object> getRelatedWords() { return this.relatedWords; }
+  public ArrayList<Object> getLabels() {
+    return this.labels;
+  }
 
-    public void setRelatedWords(ArrayList<Object> relatedWords) { this.relatedWords = relatedWords; }
+  public void setLabels(ArrayList<Object> labels) {
+    this.labels = labels;
+  }
 
-    private ArrayList<Object> labels;
+  public ArrayList<Object> getCitations() {
+    return this.citations;
+  }
 
-    public ArrayList<Object> getLabels() { return this.labels; }
+  public void setCitations(ArrayList<Object> citations) {
+    this.citations = citations;
+  }
 
-    public void setLabels(ArrayList<Object> labels) { this.labels = labels; }
+  public String getWord() {
+    return this.word;
+  }
 
-    private ArrayList<Object> citations;
+  public void setWord(String word) {
+    this.word = word;
+  }
 
-    public ArrayList<Object> getCitations() { return this.citations; }
+  public String getPartOfSpeech() {
+    return this.partOfSpeech;
+  }
 
-    public void setCitations(ArrayList<Object> citations) { this.citations = citations; }
+  public void setPartOfSpeech(String partOfSpeech) {
+    this.partOfSpeech = partOfSpeech;
+  }
 
-    private String word;
+  public String getAttributionText() {
+    return this.attributionText;
+  }
 
-    public String getWord() { return this.word; }
+  public void setAttributionText(String attributionText) {
+    this.attributionText = attributionText;
+  }
 
-    public void setWord(String word) { this.word = word; }
+  public String getSequence() {
+    return this.sequence;
+  }
 
-    private String partOfSpeech;
+  public void setSequence(String sequence) {
+    this.sequence = sequence;
+  }
 
-    public String getPartOfSpeech() { return this.partOfSpeech; }
+  public String getText() {
+    return this.text;
+  }
 
-    public void setPartOfSpeech(String partOfSpeech) { this.partOfSpeech = partOfSpeech; }
+  public void setText(String text) {
+    this.text = text;
+  }
 
-    private String attributionText;
+  public double getScore() {
+    return this.score;
+  }
 
-    public String getAttributionText() { return this.attributionText; }
-
-    public void setAttributionText(String attributionText) { this.attributionText = attributionText; }
-
-    private String sequence;
-
-    public String getSequence() { return this.sequence; }
-
-    public void setSequence(String sequence) { this.sequence = sequence; }
-
-    private String text;
-
-    public String getText() { return this.text; }
-
-    public void setText(String text) { this.text = text; }
-
-    private double score;
-
-    public double getScore() { return this.score; }
-
-    public void setScore(double score) { this.score = score; }
+  public void setScore(double score) {
+    this.score = score;
+  }
 }

@@ -13,6 +13,7 @@ import com.zhenqiangli.shakespeare.network.ChineseDefinitionRequester;
  */
 
 public class DictDataRepository {
+
   private static DictDataRepository INSTANCE;
   private Context context;
   private SQLiteDatabase database;
@@ -35,27 +36,29 @@ public class DictDataRepository {
   }
 
   private void insert(WordInfo wordInfo, GetDefinitionCallback callback) {
-      String defs = "";
-      for (String def : wordInfo.getDefinitions()) {
-        defs += def + "\n";
-      }
-      ContentValues cv = new ContentValues();
-      cv.put(Cols.KEYWORD, wordInfo.getKeyword());
-      cv.put(Cols.PRON_EN, wordInfo.getPronEn());
-      cv.put(Cols.PRON_AM, wordInfo.getPronAm());
-      cv.put(Cols.SOUND_EN, wordInfo.getSoundEn());
-      cv.put(Cols.SOUND_AM, wordInfo.getSoundAm());
-      cv.put(Cols.DEFINITION, defs);
+    String defs = "";
+    for (String def : wordInfo.getDefinitions()) {
+      defs += def + "\n";
+    }
+    ContentValues cv = new ContentValues();
+    cv.put(Cols.KEYWORD, wordInfo.getKeyword());
+    cv.put(Cols.PRON_EN, wordInfo.getPronEn());
+    cv.put(Cols.PRON_AM, wordInfo.getPronAm());
+    cv.put(Cols.SOUND_EN, wordInfo.getSoundEn());
+    cv.put(Cols.SOUND_AM, wordInfo.getSoundAm());
+    cv.put(Cols.DEFINITION, defs);
 
-      database.insert(Words.NAME, null, cv);
-      callback.run(() -> wordInfo);
+    database.insert(Words.NAME, null, cv);
+    callback.run(() -> wordInfo);
   }
 
   public interface GetDefinitionResult {
+
     WordInfo getWordInfo();
   }
 
   public interface GetDefinitionCallback {
+
     void run(GetDefinitionResult result);
   }
 }

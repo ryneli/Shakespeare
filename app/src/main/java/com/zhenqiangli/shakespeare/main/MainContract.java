@@ -11,14 +11,22 @@ import java.util.List;
  */
 
 public interface MainContract {
+
   interface View extends BaseView<Presenter> {
+
     void showDrama(int workIndex, int sceneIndex);
   }
+
   interface Presenter extends BasePresenter {
+
     void openDrama(int workIndex, int sceneIndex);
+
     int getGenreSize();
+
     String getGenreName(int position);
+
     List<DramaSummary> getDramaList(int position);
+
     Drawable getBookCover(int workId);
   }
 }

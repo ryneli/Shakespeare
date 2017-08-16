@@ -5,5 +5,6 @@ package com.zhenqiangli.shakespeare;
  */
 
 public interface BasePresenter {
+
   void start();
 }

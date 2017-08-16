@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
  */
 
 public class ShakespeareApp extends Application {
+
   private Executor backgroundExecutor = Executors.newSingleThreadExecutor();
 
   @Override

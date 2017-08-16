@@ -17,6 +17,7 @@ import java.net.URLConnection;
  */
 
 public class FileDownloader {
+
   private static FileDownloader INSTANCE;
   Context context;
   String basepath;
@@ -25,6 +26,13 @@ public class FileDownloader {
     this.context = context.getApplicationContext();
     this.basepath = context.getApplicationInfo().dataDir + "/download";
     createFolderIfNotExist(basepath);
+  }
+
+  public synchronized static FileDownloader get(Context context) {
+    if (INSTANCE == null) {
+      INSTANCE = new FileDownloader(context);
+    }
+    return INSTANCE;
   }
 
   private void createFolderIfNotExist(String path) {
@@ -37,13 +45,6 @@ public class FileDownloader {
         e.printStackTrace();
       }
     }
-  }
-
-  public synchronized static FileDownloader get(Context context) {
-    if (INSTANCE == null) {
-      INSTANCE = new FileDownloader(context);
-    }
-    return INSTANCE;
   }
 
   public String downloadFile(String url) {

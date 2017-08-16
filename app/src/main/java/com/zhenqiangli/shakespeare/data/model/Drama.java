@@ -1,24 +1,22 @@
 package com.zhenqiangli.shakespeare.data.model;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.Math.min;
 
 /**
  * Drama model
  */
 
 public class Drama {
+
   private static final String TAG = "Drama";
   private int workIndex;
   private Map<Integer, Scene> scenes = new HashMap<>();
 
-    public Drama(int workIndex) {
-        this.workIndex = workIndex;
-    }
+  public Drama(int workIndex) {
+    this.workIndex = workIndex;
+  }
 
   public Scene getScene(int sceneIndex) {
     return scenes.get(sceneIndex);
@@ -34,7 +32,8 @@ public class Drama {
     return null;
   }
 
-  public void put(int actIndex, int sceneIndex, String character, String paragraph, int paragraphIndex) {
+  public void put(int actIndex, int sceneIndex, String character, String paragraph,
+      int paragraphIndex) {
     int num = scenes.size();
     Scene scene = getScene(actIndex, sceneIndex);
     if (scene == null) {
@@ -45,8 +44,9 @@ public class Drama {
   }
 
   public int getWorkIndex() {
-      return workIndex;
+    return workIndex;
   }
+
   public int getNumScenes() {
     return scenes.size();
   }

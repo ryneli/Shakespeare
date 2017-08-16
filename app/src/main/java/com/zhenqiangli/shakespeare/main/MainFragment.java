@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.zhenqiangli.shakespeare.R;
+import com.zhenqiangli.shakespeare.auth.EmailPasswordActivity;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
 import com.zhenqiangli.shakespeare.scene.SceneActivity;
 import com.zhenqiangli.shakespeare.util.Others;
@@ -67,10 +68,16 @@ public class MainFragment extends Fragment implements MainContract.View,
   }
 
   @Override
+  public void login() {
+    startActivity(EmailPasswordActivity.newIntent(getActivity()));
+  }
+
+  @Override
   public boolean onNavigationItemSelected(@NonNull MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_login:
         Log.d(TAG, "onOptionsItemSelected: " + item.getTitle());
+        presenter.login();
         return true;
       default:
         Log.d(TAG, "onOptionsItemSelected: " + item.getTitle());

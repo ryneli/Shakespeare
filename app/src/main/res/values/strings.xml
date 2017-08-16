@@ -2,4 +2,8 @@
   <string name="app_name">Shakespeare</string>
   <string name="sample_text"> Sample text </string>
   <string name="menu_login"> Login </string>
+  <string name="create_account"> Create account </string>
+  <string name="sign_in"> Sign in </string>
+  <string name="hint_email"> Email </string>
+  <string name="hint_password"> Password </string>
 </resources>

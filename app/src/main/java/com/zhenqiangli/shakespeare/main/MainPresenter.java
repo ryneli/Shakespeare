@@ -48,4 +48,9 @@ public class MainPresenter implements MainContract.Presenter {
   public Drawable getBookCover(int workId) {
     return dataRepository.getBookCover(workId);
   }
+
+  @Override
+  public void login() {
+    view.login();
+  }
 }

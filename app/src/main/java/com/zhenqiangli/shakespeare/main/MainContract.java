@@ -15,6 +15,8 @@ public interface MainContract {
   interface View extends BaseView<Presenter> {
 
     void showDrama(int workIndex, int sceneIndex);
+
+    void login();
   }
 
   interface Presenter extends BasePresenter {
@@ -28,5 +30,7 @@ public interface MainContract {
     List<DramaSummary> getDramaList(int position);
 
     Drawable getBookCover(int workId);
+
+    void login();
   }
 }

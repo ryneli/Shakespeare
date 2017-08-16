@@ -3,5 +3,8 @@
     android:id="@+id/rv_scenes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="@dimen/scene_padding_start_end"
+    android:paddingEnd="@dimen/scene_padding_start_end"
+    android:scrollbarStyle="outsideOverlay"
     android:scrollbars="vertical">
 </android.support.v7.widget.RecyclerView>

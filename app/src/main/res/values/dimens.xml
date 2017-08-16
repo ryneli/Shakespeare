@@ -8,4 +8,5 @@
     <dimen name="icon_voice_height"> 16dp </dimen>
     <dimen name="book_cover_width"> 160dp </dimen>
     <dimen name="book_cover_height"> 240dp </dimen>
+    <dimen name="scene_padding_start_end"> 8dp </dimen>
 </resources>

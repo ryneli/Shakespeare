@@ -1,7 +1,8 @@
 package com.zhenqiangli.shakespeare.data.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by zhenqiangli on 7/26/17.
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class Paragraph {
   private String charactorName;
-  private Map<Integer, Line> lines = new HashMap<>();
+  private List<String> lines = new ArrayList<>();
 
   public String getCharactorName() {
     return charactorName;
@@ -19,18 +20,13 @@ public class Paragraph {
     this.charactorName = charactorName;
   }
 
-  public Map<Integer, Line> getLines() {
+  public List<String> getLines() {
     return lines;
   }
 
   public void put(String character, String paragraph) {
     charactorName = character;
     // TODO: parse paragraph into lines
-    int i = 0;
-    for (String line : paragraph.split(System.getProperty("line.separator"))) {
-      lines.put(i, new Line(line));
-      i++;
-    }
-
+    lines = Arrays.asList(paragraph.split(System.getProperty("line.separator")));
   }
 }

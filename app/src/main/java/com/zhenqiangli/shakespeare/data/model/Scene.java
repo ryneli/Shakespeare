@@ -1,7 +1,7 @@
 package com.zhenqiangli.shakespeare.data.model;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Scene Model
@@ -14,7 +14,9 @@ public class Scene {
     this.actIndex = actIndex;
     this.sceneIndex = sceneIndex;
   }
-  private Map<Integer, Paragraph> paragraphs = new HashMap<>();
+
+  // Need sorted map here
+  private Map<Integer, Paragraph> paragraphs = new TreeMap<>();
 
   public Map<Integer, Paragraph> getParagraphs() {
     return paragraphs;

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.main.MainContract.Presenter;
-import com.zhenqiangli.shakespeare.util.Others;
 import com.zhenqiangli.shakespeare.util.RecyclerItemClickListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -64,17 +63,6 @@ public class BookGenreFragment extends Fragment {
     worksView.setAdapter(adapter);
     recyclerItemClickListener = new RecyclerItemClickListener(getActivity(), worksView, adapter);
     worksView.addOnItemTouchListener(recyclerItemClickListener);
-    worksView.addOnScrollListener(new HidingScrollListener() {
-      @Override
-      public void onHide() {
-        Others.hideSystemUI(worksView);
-      }
-
-      @Override
-      public void onShow() {
-        Others.showSystemUI(worksView);
-      }
-    });
     return view;
   }
 
@@ -156,35 +144,5 @@ public class BookGenreFragment extends Fragment {
       bookDetailView.setText(String.format("%s",
           dramaSummary.getYear()));
     }
-  }
-
-  // https://mzgreen.github.io/2015/02/15/How-to-hideshow-Toolbar-when-list-is-scroling%28part1%29/
-  public abstract class HidingScrollListener extends RecyclerView.OnScrollListener {
-    private static final int HIDE_THRESHOLD = 20;
-    private int scrolledDistance = 0;
-    private boolean controlsVisible = true;
-
-    @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-      super.onScrolled(recyclerView, dx, dy);
-
-      if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
-        onHide();
-        controlsVisible = false;
-        scrolledDistance = 0;
-      } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible) {
-        onShow();
-        controlsVisible = true;
-        scrolledDistance = 0;
-      }
-
-      if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
-        scrolledDistance += dy;
-      }
-    }
-
-    public abstract void onHide();
-    public abstract void onShow();
-
   }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+      android:id="@+id/menu_title"
+      android:icon="@drawable/shakespeare_icon"
+      android:title="@string/app_name"/>
+  <item
+      android:id="@+id/menu_login"
+      android:icon="@drawable/navigation_icon"
+      android:title="@string/menu_login"/>
+</menu>

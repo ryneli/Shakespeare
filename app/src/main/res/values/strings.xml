@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Shakespeare</string>
     <string name="sample_text"> Sample text </string>
+    <string name="menu_login"> Login </string>
 </resources>

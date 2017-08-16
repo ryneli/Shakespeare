@@ -16,6 +16,7 @@ import com.zhenqiangli.shakespeare.data.model.DatabaseSchema.Works;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.DramaSummary;
 import com.zhenqiangli.shakespeare.util.TimeUtil;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -154,6 +155,12 @@ public class DataRepository {
     String filepath = "covers/" + String.valueOf(workId) + ".jpg";
     Log.d(TAG, "getBookCover: " + filepath);
     Drawable res = context.getDrawable(R.drawable.close_book);
+
+    File f = new File(filepath);
+    if (!f.exists()) {
+      return res;
+    }
+
     try {
       InputStream in = context.getAssets().open(filepath);
       res = Drawable.createFromStream(in, null);

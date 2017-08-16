@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-  <android.support.design.widget.AppBarLayout
+    android:layout_height="match_parent">
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@drawable/action_bar_background">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_top_margin"
-        app:title="@string/app_name"
-        app:titleTextAppearance="@style/ToolbarText"
-        app:navigationIcon="@drawable/navigation_icon">
-
-    </android.support.v7.widget.Toolbar>
-    <FrameLayout
+        android:background="@drawable/action_bar_background">
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/toolbar_top_margin"
+          app:title="@string/app_name"
+          app:titleTextAppearance="@style/ToolbarText"
+          app:navigationIcon="@drawable/navigation_icon"/>
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"/>
+      <android.support.design.widget.TabLayout
+          android:id="@+id/tabs"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/tabBackground"
+          app:tabMode="scrollable"
+          app:tabTextColor="@color/tabUnselected"
+          app:tabSelectedTextColor="@color/tabSelected"/>
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/book_list_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"></FrameLayout>
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/tabBackground"
-        app:tabMode="scrollable"
-        app:tabTextColor="@color/tabUnselected"
-        app:tabSelectedTextColor="@color/tabSelected"/>
-  </android.support.design.widget.AppBarLayout>
-  <android.support.v4.view.ViewPager
-      android:id="@+id/book_list_view_pager"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+        android:layout_height="wrap_content" />
+  </LinearLayout>
 
-  </android.support.v4.view.ViewPager>
-
-</LinearLayout>
+  <android.support.design.widget.NavigationView
+      android:id="@+id/main_drawer_menu"
+      android:layout_width="240dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:choiceMode="singleChoice"
+      android:divider="@android:color/transparent"
+      android:dividerHeight="0dp"
+      app:menu="@menu/main_menu"/>
+</android.support.v4.widget.DrawerLayout>

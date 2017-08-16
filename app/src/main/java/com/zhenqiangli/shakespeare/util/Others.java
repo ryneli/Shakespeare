@@ -23,9 +23,17 @@ public class Others {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
+    public static void showSystemUI(View v) {
+        // TODO: add timer to hide toolbar after 2 seconds
+        v.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
     // This snippet shows the system bars. It does this by removing all the flags
 // except for the ones that make the content appear under the system bars.
-    public static void showSystemUI(View v) {
+    public static void showSystemUITemp(View v) {
         // TODO: add timer to hide toolbar after 2 seconds
         v.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

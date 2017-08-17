@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -16,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.Paragraph;
@@ -92,7 +92,42 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       super(v);
     }
 
-    protected abstract void bind(String text);
+    protected abstract void bind(Line line);
+  }
+
+  private class Line {
+
+    private int type;
+    private int index;
+    private String text;
+    private boolean underline;
+
+    public Line(int type, int index, String text, boolean underline) {
+      this.type = type;
+      this.index = index;
+      this.text = text;
+      this.underline = underline;
+    }
+
+    public int getType() {
+      return type;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+    public String getText() {
+      return text;
+    }
+
+    public boolean isUnderline() {
+      return underline;
+    }
+
+    public void setUnderline(boolean underline) {
+      this.underline = underline;
+    }
   }
 
   private class SceneViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
@@ -100,7 +135,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     private static final int TYPE_SCENE_TITLE = 1;
     private static final int TYPE_CHARACTER_NAME = 2;
     private static final int TYPE_SENTENCE = 3;
-    private List<Pair<Integer, String>> items;
+    private List<Line> items;
     private int sceneIndex;
     private Context context;
 
@@ -108,16 +143,16 @@ public class SceneFragment extends Fragment implements SceneContract.View {
       this.context = context;
     }
 
-    private List<Pair<Integer, String>> from(Drama drama) {
-      List<Pair<Integer, String>> items = new LinkedList<>();
+    private List<Line> from(Drama drama) {
+      List<Line> items = new LinkedList<>();
       for (int i = 0; i < drama.getNumScenes(); i++) {
         Scene scene = drama.getScene(i);
-        items.add(new Pair<>(TYPE_SCENE_TITLE,
-            String.format("Act %s, Scene %s", scene.getActIndex(), scene.getSceneIndex())));
+        items.add(new Line(TYPE_SCENE_TITLE, 0,
+            String.format("Act %s, Scene %s", scene.getActIndex(), scene.getSceneIndex()), false));
         for (Paragraph p : scene.getParagraphs().values()) {
-          items.add(new Pair<>(TYPE_CHARACTER_NAME, p.getCharactorName()));
+          items.add(new Line(TYPE_CHARACTER_NAME, 0, p.getCharactorName(), false));
           for (String l : p.getLines()) {
-            items.add(new Pair<>(TYPE_SENTENCE, l));
+            items.add(new Line(TYPE_SENTENCE, 0, l, false));
           }
         }
       }
@@ -152,7 +187,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-      holder.bind(items.get(position).second);
+      holder.bind(items.get(position));
     }
 
     @Override
@@ -162,14 +197,14 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
     @Override
     public int getItemViewType(int position) {
-      return items.get(position).first;
+      return items.get(position).getType();
     }
   }
 
   private class TextViewHolder extends BaseViewHolder {
 
     TextView contentView;
-    String text = "";
+    Line line;
 
     TextViewHolder(View v) {
       super(v);
@@ -177,8 +212,29 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     }
 
     @Override
-    protected void bind(String text) {
+    protected void bind(Line line) {
       contentView.setMovementMethod(LinkMovementMethod.getInstance());
+
+      if (line.isUnderline()) {
+        contentView.setText(getWordClicableUnderlineText(line.getText()));
+      } else {
+        contentView.setText(getWordClickableText(line.getText()));
+      }
+      contentView.setOnLongClickListener(v -> {
+        Toast.makeText(getActivity(), "Long click!", Toast.LENGTH_SHORT).show();
+        if (line.isUnderline()) {
+          contentView.setText(getWordClickableText(line.getText()));
+          line.setUnderline(false);
+        } else {
+          contentView.setText(getWordClicableUnderlineText(line.getText()));
+          line.setUnderline(true);
+        }
+        return true;
+      });
+      this.line = line;
+    }
+
+    private SpannableStringBuilder getWordClickableText(String text) {
       SpannableStringBuilder builder = new SpannableStringBuilder();
       for (String word : text.split(" ")) {
         builder.append(word);
@@ -186,8 +242,40 @@ public class SceneFragment extends Fragment implements SceneContract.View {
             builder.length() - word.length(), builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(" ");
       }
-      contentView.setText(builder);
-      this.text = text;
+      return builder;
+    }
+
+    private SpannableStringBuilder getWordClicableUnderlineText(String text) {
+      SpannableStringBuilder builder = new SpannableStringBuilder();
+      for (String word : text.split(" ")) {
+        builder.append(word);
+        builder.setSpan(new SelectedWordSpan(word),
+            builder.length() - word.length(), builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(" ");
+        builder.setSpan(new UnderlineSpan(),
+            builder.length() - 1, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+      }
+      return builder;
+    }
+  }
+
+  private class SelectedWordSpan extends ClickableWordSpan {
+
+    public SelectedWordSpan(String word) {
+      super(word);
+    }
+
+    @Override
+    public void updateDrawState(TextPaint ds) {
+      ds.setUnderlineText(true);
+    }
+  }
+
+  private class UnderlineSpan extends ClickableSpan {
+
+    @Override
+    public void onClick(View widget) {
+      // do nothing
     }
   }
 

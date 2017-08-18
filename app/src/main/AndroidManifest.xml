@@ -27,6 +27,8 @@
         android:screenOrientation="portrait">
     </activity>
     <activity android:name=".auth.EmailPasswordActivity"/>
+    <activity android:name=".comment.CommentActivity"
+        android:windowSoftInputMode="stateAlwaysVisible"/>
   </application>
 
 </manifest>

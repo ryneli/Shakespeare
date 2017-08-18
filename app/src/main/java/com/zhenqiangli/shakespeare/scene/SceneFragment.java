@@ -1,8 +1,10 @@
 package com.zhenqiangli.shakespeare.scene;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.zhenqiangli.shakespeare.R;
+import com.zhenqiangli.shakespeare.comment.CommentActivity;
 import com.zhenqiangli.shakespeare.data.model.Drama;
 import com.zhenqiangli.shakespeare.data.model.Scene;
 import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
@@ -33,6 +36,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   private Callbacks callbacks;
   private SceneViewAdapter adapter;
   private Presenter presenter;
+  private FloatingActionButton commentButton;
 
   public static SceneFragment newInstance() {
     Bundle arguments = new Bundle();
@@ -46,6 +50,8 @@ public class SceneFragment extends Fragment implements SceneContract.View {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_scene, container, false);
+    commentButton = (FloatingActionButton) view.findViewById(R.id.comment_button);
+    commentButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), CommentActivity.class)));
     RecyclerView scenesView = (RecyclerView) view.findViewById(R.id.rv_scenes);
     scenesView.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new SceneViewAdapter(getActivity());

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import com.zhenqiangli.shakespeare.BaseActivity;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.DataRepository;
 
@@ -14,7 +14,7 @@ import com.zhenqiangli.shakespeare.data.DataRepository;
  * Created by zhenqiangli on 7/26/17.
  */
 
-public class SceneActivity extends AppCompatActivity implements SceneFragment.Callbacks {
+public class SceneActivity extends BaseActivity implements SceneFragment.Callbacks {
 
   private static final String TAG = "SceneActivity";
   private static final String EXTRA_WORK = "work";

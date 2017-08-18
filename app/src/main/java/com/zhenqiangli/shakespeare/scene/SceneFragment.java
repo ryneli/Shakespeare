@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.zhenqiangli.shakespeare.R;
 import com.zhenqiangli.shakespeare.data.model.Drama;
-import com.zhenqiangli.shakespeare.data.model.Paragraph;
 import com.zhenqiangli.shakespeare.data.model.Scene;
 import com.zhenqiangli.shakespeare.scene.SceneContract.Presenter;
 import java.util.LinkedList;
@@ -149,12 +148,14 @@ public class SceneFragment extends Fragment implements SceneContract.View {
         Scene scene = drama.getScene(i);
         items.add(new Line(TYPE_SCENE_TITLE, 0,
             String.format("Act %s, Scene %s", scene.getActIndex(), scene.getSceneIndex()), false));
-        for (Paragraph p : scene.getParagraphs().values()) {
-          items.add(new Line(TYPE_CHARACTER_NAME, 0, p.getCharactorName(), false));
-          for (String l : p.getLines()) {
-            items.add(new Line(TYPE_SENTENCE, 0, l, false));
-          }
-        }
+        scene.getParagraphs().values().stream().forEach(
+            p -> {
+              items.add(new Line(TYPE_CHARACTER_NAME, 0, p.getCharactorName(), false));
+              p.getLines().stream().forEach(
+                  l -> items.add(new Line(TYPE_SENTENCE, 0, l, false))
+              );
+            }
+        );
       }
       return items;
     }
